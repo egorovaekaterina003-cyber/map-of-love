@@ -196,11 +196,67 @@ body{
 
   <!-- CHAPTER END SCREENS -->
   <div class="screen" id="screen-chapter-end">
-    <div class="chapter-end-icon" id="ce-icon">✨</div>
-    <div class="chapter-end-title" id="ce-title">Первая глава открыта</div>
-    <div class="chapter-end-text" id="ce-text"></div>
-    <div class="chapter-end-tease" id="ce-tease"></div>
+    <div style="text-align:center;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);margin-bottom:16px;" id="ce-eyebrow">❤️ Первая часть карты открыта</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div style="margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
+        <span style="font-size:14px;font-weight:800;color:var(--pink);" id="ce-pct">25%</span>
+      </div>
+      <div style="height:8px;background:var(--card);border-radius:4px;overflow:hidden;">
+        <div id="ce-progress-fill" style="height:100%;background:linear-gradient(90deg,var(--pink),#F0A0C8);border-radius:4px;transition:width 1s ease;width:25%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span id="cp1" style="font-size:10px;color:var(--pink);">●</span>
+        <span id="cp2" style="font-size:10px;color:var(--text-3);">●</span>
+        <span id="cp3" style="font-size:10px;color:var(--text-3);">●</span>
+        <span id="cp4" style="font-size:10px;color:var(--text-3);">●</span>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin-bottom:20px;">
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:10px;" id="ce-intro-text">Мы пока не знаем всю историю. Но уже появилась важная закономерность.</div>
+      <div style="font-size:13px;color:var(--text-2);margin-bottom:10px;" id="ce-label-text">Мужчины считывают тебя как женщину, которая...</div>
+      <div style="font-size:15px;line-height:1.65;color:var(--text);font-style:italic;" id="ce-dynamic-text"></div>
+    </div>
+
+    <div style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:20px;" id="ce-footer-text">Пока это только первая часть истории.</div>
     <button class="btn-primary" id="ce-btn" onclick="startNextChapter()">Продолжить →</button>
+  </div>
+
+  <!-- PRE-RESULT SCREEN -->
+  <div class="screen" id="screen-preresult">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:48px;margin-bottom:16px;">🧩</div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;margin-bottom:14px;">Мы собрали тебя по кусочкам</div>
+    </div>
+    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:14px;">За последние несколько минут ты не проходила тест.</p>
+    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:24px;">Ты проживала реальные ситуации.</p>
+    <div style="background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;margin-bottom:28px;font-size:14px;line-height:1.6;color:var(--text-2);">
+      ⚠️ Не спеши пролистывать.<br>Некоторые выводы могут удивить тебя.
+    </div>
+
+    <!-- Full progress -->
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
+        <span style="font-size:14px;font-weight:800;color:var(--pink);">100%</span>
+      </div>
+      <div style="height:8px;background:var(--card);border-radius:4px;overflow:hidden;">
+        <div style="height:100%;background:linear-gradient(90deg,var(--pink),#F0A0C8);border-radius:4px;width:100%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="showResult()">Открыть мою историю →</button>
   </div>
 
   <!-- RESULT -->
@@ -255,11 +311,16 @@ body{
 
     <div style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:20px;" id="res-cta-text"></div>
 
+    <div style="font-size:15px;line-height:1.7;color:var(--text-2);margin:0 0 20px;padding:20px 18px;background:var(--card);border-radius:var(--radius);">
+      Если бы ты пришла ко мне лично, я бы не советовала тебе всё подряд.<br><br>
+      По твоей истории уже видно, где начинается повторяющийся сценарий.<br><br>
+      Поэтому ниже — маршрут, который подходит именно тебе.
+    </div>
     <div class="upsell-wrap">
-      <div class="upsell-eyebrow">Следующий шаг</div>
+      <div class="upsell-eyebrow">Твой маршрут</div>
       <div class="upsell-title">Ликвидация гайдов</div>
       <div class="upsell-text">Карта показала твой сценарий. Гайды дают конкретные инструменты — как изменить привычные реакции и начать строить отношения, в которых не нужно заслуживать любовь.</div>
-      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" class="btn-amber" style="margin-top:20px;">Переписать свой сценарий →</a>
+      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" class="btn-amber" style="margin-top:20px;">Забрать мой маршрут →</a>
     </div>
     <p class="footer-note">Карта отправлена на твою почту.</p>
   </div>
@@ -657,20 +718,93 @@ function nextQuestion(){
   }
 }
 
+// Mini-portrait dynamic texts per chapter per scenario
+const MINI_PORTRAITS = {
+  1: { // Как мужчины видят тебя
+    стараюсь_понравиться: 'умеет создавать тепло и лёгкость — но иногда теряет себя, когда очень хочет понравиться.',
+    чем_дальше_тем_сильнее: 'живая и эмоциональная — её чувства настоящие, и мужчины это ощущают.',
+    понимаю_но_жду: 'умная и наблюдательная — видит людей глубже, чем они замечают сами.',
+    проще_закрыться: 'глубокая и загадочная — за внешней сдержанностью скрывается много.',
+    умею_любить: 'щедрая и внимательная — рядом с ней мужчина чувствует себя нужным.',
+    спокойствие_скучно: 'яркая и притягивающая — с ней всегда что-то происходит.',
+    выбираю_себя: 'уверенная и живая — с ней интересно, и она не растворяется.'
+  },
+  2: { // Что меняется при влюблённости
+    стараюсь_понравиться: 'естественность уступает контролю — хочется сказать правильное, выглядеть лучше, не спугнуть.',
+    чем_дальше_тем_сильнее: 'любая пауза превращается в тревогу, а неопределённость усиливает чувство — вместо того чтобы его снижать.',
+    понимаю_но_жду: 'осознанность отступает, и надежда берёт своё — остаётся рядом дольше, чем позволяют реальные поступки.',
+    проще_закрыться: 'именно тогда, когда важно открыться, включается защита — дистанция, молчание, «мне всё равно».',
+    умею_любить: 'вкладывается полностью — своё время, внимание, заботу — иногда раньше, чем видит встречное движение.',
+    спокойствие_скучно: 'непредсказуемый мужчина кажется захватывающим, а стабильный — недостаточно интересным.',
+    выбираю_себя: 'остаётся собой — интерес есть, но он не превращается в тревогу и не меняет ритм жизни.'
+  },
+  3: { // Что мужчина чувствует рядом
+    стараюсь_понравиться: 'тепло и внимание — но иногда слишком сильное желание угодить, за которым исчезает та самая лёгкость.',
+    чем_дальше_тем_сильнее: 'глубокую вовлечённость — и одновременно её зависимость от его действий.',
+    понимаю_но_жду: 'принятие и терпение — комфортно для него, но не всегда работает в её пользу.',
+    проще_закрыться: 'глубину — но не всегда понимает, как к ней подобраться.',
+    умею_любить: 'принятие и заботу — редкость и ценность, которая иногда появляется раньше, чем сложилось доверие.',
+    спокойствие_скучно: 'живой интерес — но только если успевает поддерживать напряжение.',
+    выбираю_себя: 'что-то редкое: живого человека, которому с ним интересно — но который не зависит от его реакции.'
+  }
+};
+
+const CE_CONFIGS = {
+  1: {
+    eyebrow: '❤️ Первая часть карты открыта',
+    intro: 'Мы пока не знаем всю историю. Но уже появилась важная закономерность.',
+    label: 'Мужчины считывают тебя как женщину, которая...',
+    footer: 'Пока это только первая часть истории.',
+    pct: '25%',
+    width: '25%',
+    dots: [true, false, false, false]
+  },
+  2: {
+    eyebrow: '❤️ Уже становится понятно...',
+    intro: 'Теперь мы видим, что происходит, когда мужчина становится эмоционально важным.',
+    label: 'Когда ты влюбляешься...',
+    footer: 'Карта собирается. Впереди самое важное.',
+    pct: '50%',
+    width: '50%',
+    dots: [true, true, false, false]
+  },
+  3: {
+    eyebrow: '❤️ Картина становится объёмнее...',
+    intro: 'Теперь видно, что мужчина чувствует рядом с тобой.',
+    label: 'Рядом с тобой мужчина ощущает...',
+    footer: 'Осталась последняя часть — и тогда картина будет полной.',
+    pct: '75%',
+    width: '75%',
+    dots: [true, true, true, false]
+  }
+};
+
 function showChapterEnd(){
-  const ch = CHAPTERS[currentChapter - 1];
-  document.getElementById('ce-icon').textContent = ch.endIcon;
-  document.getElementById('ce-title').textContent = ch.endTitle;
-  document.getElementById('ce-text').innerHTML = ch.endText.replace(/\n\n/g, '<br><br>');
-  document.getElementById('ce-tease').textContent = ch.endTease;
+  const scenario = getScenario();
 
   if(currentChapter >= 4){
-    document.getElementById('ce-btn').textContent = 'Открыть мою карту →';
-    document.getElementById('ce-btn').onclick = showResult;
-  } else {
-    document.getElementById('ce-btn').textContent = 'Продолжить историю →';
-    document.getElementById('ce-btn').onclick = startNextChapter;
+    goToScreen('screen-preresult');
+    return;
   }
+
+  const cfg = CE_CONFIGS[currentChapter];
+  const dynamicText = MINI_PORTRAITS[currentChapter][scenario] || '';
+
+  document.getElementById('ce-eyebrow').textContent = cfg.eyebrow;
+  document.getElementById('ce-intro-text').textContent = cfg.intro;
+  document.getElementById('ce-label-text').textContent = cfg.label;
+  document.getElementById('ce-dynamic-text').textContent = dynamicText;
+  document.getElementById('ce-footer-text').textContent = cfg.footer;
+  document.getElementById('ce-pct').textContent = cfg.pct;
+  document.getElementById('ce-progress-fill').style.width = cfg.width;
+
+  ['cp1','cp2','cp3','cp4'].forEach((id, i) => {
+    document.getElementById(id).style.color = cfg.dots[i] ? 'var(--pink)' : 'var(--text-3)';
+  });
+
+  document.getElementById('ce-btn').textContent = 'Продолжить историю →';
+  document.getElementById('ce-btn').onclick = startNextChapter;
+
   goToScreen('screen-chapter-end');
 }
 
