@@ -210,11 +210,42 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
     <div class="div"></div>
     <div style="font-size:15px;line-height:1.7;color:var(--text2);margin-bottom:20px;padding:20px 18px;background:var(--card);border-radius:var(--r);" id="r-close"></div>
 
+    <!-- PATTERN BLOCK -->
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;">🔍 Закономерность, которая проходит через твою карту</div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:17px;margin-bottom:10px;" id="r-pattern-title"></div>
+      <div style="font-size:14px;line-height:1.65;color:var(--text);" id="r-pattern-explain"></div>
+      <div style="margin-top:14px;font-size:13px;color:var(--text2);line-height:1.6;">Это не отдельная «ошибка». Это привычный способ защищать себя, искать близость или принимать решения в отношениях. Именно поэтому менять нужно не всю себя — а конкретный участок сценария.</div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;">❤️ Что может помочь именно тебе</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5;">По твоей карте проблема не «в мужчинах вообще». Самая важная точка находится здесь:</div>
+      <div style="font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:16px;" id="r-point"></div>
+
+      <!-- Primary product -->
+      <div style="border:1.5px solid var(--pink);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;">🥇 Главный материал</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:8px;" id="r-prod1-name"></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--text2);margin-bottom:14px;" id="r-prod1-why"></div>
+        <a id="r-prod1-btn" href="#" class="btn btn-p" style="margin-top:0;font-size:14px;padding:13px;">Посмотреть гайд →</a>
+      </div>
+
+      <!-- Secondary product -->
+      <div id="r-prod2-wrap" style="border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;margin-bottom:0;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">🥈 Дополнительный шаг</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:8px;" id="r-prod2-name"></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--text2);margin-bottom:14px;" id="r-prod2-why"></div>
+        <a id="r-prod2-btn" href="#" class="btn btn-p" style="margin-top:0;font-size:14px;padding:13px;">Посмотреть гайд →</a>
+      </div>
+    </div>
+
+    <!-- PACKAGE -->
     <div class="upsell">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">Твой маршрут</div>
-      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;margin-bottom:10px;">Ликвидация гайдов</div>
-      <div style="font-size:13.5px;color:var(--text2);line-height:1.55;">Карта показала твой сценарий. Гайды дают конкретные инструменты — как изменить привычные реакции и начать строить отношения, в которых не нужно заслуживать любовь.</div>
-      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" class="btn btn-a" style="margin-top:20px;">Забрать мой маршрут →</a>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">🔥 Для твоей карты есть более полный вариант</div>
+      <div style="font-size:13.5px;color:var(--text2);line-height:1.55;margin-bottom:16px;" id="r-pkg-text">Несколько материалов из твоего маршрута входят в пакет ликвидации — можно забрать их вместе, выгоднее.</div>
+      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" class="btn btn-a" style="margin-top:0;">Забрать мой пакет →</a>
     </div>
     <p class="fn">Карта отправлена на твою почту.</p>
   </div>
@@ -747,6 +778,78 @@ function showChapterEnd(){
 function startNextChapter(){startCh(curCh+1);}
 
 /* ══════════════════════════════════════════════════
+   ПАТТЕРНЫ И ПРОДУКТЫ
+══════════════════════════════════════════════════ */
+const GUIDES = {
+  rengten:   { name: 'Читай мужчин как рентген',                         url: 'https://bit.ly/40X2UKW' },
+  muds:      { name: 'Как не залипать на мудаков',                        url: 'https://bit.ly/4bUkAf8' },
+  attract:   { name: 'Как начать притягивать нормальных',                 url: 'https://bit.ly/4s7gzKt' },
+  practicum: { name: 'Практикум «Тёмные искусства»',                      url: 'https://goo.su/xcn56' },
+  revenge:   { name: 'Гайд про месть',                                    url: 'https://drive.google.com/file/d/1S5bKZk9N36dThwFJr36Zi4fxLVTUKDGG/view' },
+  healthy:   { name: 'Строим здоровые отношения',                         url: 'https://egorovaekaterina003-cyber.github.io/index_final/' },
+  princess:  { name: 'Принцессы не какают',                               url: 'https://egorovaekaterina003-cyber.github.io/index_final/' },
+  alone:     { name: 'Стоп, одиночество',                                 url: 'https://drive.google.com/file/d/1hEKnABBbSJyZRHa_NXKEpAOEk1ExS3eP/view' }
+};
+
+// Паттерн → продукты + тексты
+const PATTERN_PRODUCTS = {
+  S1: { // Растворение
+    patternTitle: 'Мне важно, чтобы меня выбрали',
+    patternExplain: 'Когда мужчина становится важным, его внимание превращается в главный ориентир. Ты стараешься понравиться, подстраиваешься, вкладываешь больше — и незаметно теряешь собственную позицию.',
+    point: 'Самоценность, которая зависит от реакции мужчины',
+    prod1: 'practicum',
+    why1: 'Практикум работает с самооценкой и самоценностью — то есть с корнем паттерна: перестать определять собственную ценность через мужское внимание и снова занять позицию женщины, которая выбирает сама.',
+    prod2: 'muds',
+    why2: 'Помогает заметить момент, когда сильная вовлечённость превращается в эмоциональную фиксацию, и вернуть способность не терять себя внутри отношений.'
+  },
+  S2: { // Притяжение через недоступность
+    patternTitle: 'Чем он холоднее, тем сильнее меня тянет',
+    patternExplain: 'Нестабильность усиливает привязанность и воспринимается как химия. Когда мужчина то приближается, то исчезает — он занимает непропорционально много места именно потому, что его сложно получить.',
+    point: 'Эмоциональная зависимость от недоступности',
+    prod1: 'muds',
+    why1: 'Твоей карте важно разорвать связь между недоступностью мужчины и силой притяжения. Гайд помогает перестать эмоционально застревать там, где неопределённость только усиливает зависимость.',
+    prod2: 'attract',
+    why2: 'Помогает перестроить сам критерий притяжения — заметить ценность стабильного мужчины до того, как эмоциональные качели снова станут главным доказательством «химии».'
+  },
+  S3: { // Ожидание
+    patternTitle: 'Я всё понимаю, но слишком долго жду',
+    patternExplain: 'Ты обычно видишь сигналы, но откладываешь решение. «Нужно дать время», «у него сложный период» — и история продолжает жить на надежде, хотя изменения минимальны.',
+    point: 'Терпение, которое длится дольше, чем полезно тебе',
+    prod1: 'muds',
+    why1: 'Тебе не столько не хватает понимания мужчины, сколько трудно эмоционально выйти из уже понятной истории. Поэтому первым шагом должен быть материал про выход из залипания.',
+    prod2: 'rengten',
+    why2: 'Помогает оценивать мужчину по реальным признакам и поступкам, чтобы эмоциональная привязанность не успевала формироваться вокруг образа будущей версии человека.'
+  },
+  S4: { // Заслужить
+    patternTitle: 'Пытаюсь заслужить особое отношение',
+    patternExplain: 'Если мужчина сложный или непоследовательный, внутри включается мысль: «Со мной всё будет иначе». Тогда отношения превращаются в попытку доказать собственную ценность через его выбор.',
+    point: 'Самоценность восстанавливается через одобрение мужчины',
+    prod1: 'practicum',
+    why1: 'Практикум помогает вернуть внутреннюю опору — перестать определять собственную ценность через то, выбрал тебя этот мужчина или нет.',
+    prod2: 'muds',
+    why2: 'Тебе важно работать не только с конкретным мужчиной, а с тем, что его отказ или холодность делает с твоим отношением к себе.'
+  },
+  S5: { // Знакомый тип
+    patternTitle: 'Выбираю знакомый эмоциональный тип',
+    patternExplain: 'Разные мужчины могут быть разными внешне, но эмоционально похожими. Тебя цепляют знакомые ощущения — необходимость ждать, угадывать, доказывать или бороться за близость.',
+    point: 'Повторяющийся выбор неподходящего эмоционального типа',
+    prod1: 'attract',
+    why1: 'Проблема начинается ещё до отношений — на этапе выбора. Поэтому основной шаг связан с изменением того, кого ты замечаешь, кого считаешь привлекательным и кому даёшь шанс.',
+    prod2: 'rengten',
+    why2: 'Помогает сделать мужское поведение более «читаемым»: отделять обещания, потенциал и редкие яркие эпизоды от устойчивых моделей поведения.'
+  },
+  S6: { // Сильный фильтр
+    patternTitle: 'Сильный фильтр: лучше уйти раньше',
+    patternExplain: 'Ты умеешь быстро выходить из отношений, которые не соответствуют ожиданиям. Но иногда фильтр срабатывает раньше, чем появляется достаточно информации. Небольшой сбой воспринимается как повод закрыть дверь.',
+    point: 'Граница между защитой и преждевременным уходом',
+    prod1: 'healthy',
+    why1: 'Гайд помогает выстроить близость — говорить о важном, сохранять контакт, не уходя в холодность при первых же сложностях. Твоя сила — в умении уходить; задача — научиться оставаться там, где безопасно.',
+    prod2: 'practicum',
+    why2: 'Помогает разобраться, где проходит граница между здоровой самозащитой и страхом близости — и найти внутреннюю опору, которая позволяет рисковать без потери себя.'
+  }
+};
+
+/* ══════════════════════════════════════════════════
    РЕЗУЛЬТАТ
 ══════════════════════════════════════════════════ */
 function showResult(){
@@ -769,6 +872,22 @@ function showResult(){
   document.getElementById('r-str').textContent=STR_MAP[maxK];
   document.getElementById('r-grow').textContent=GROW_MAP[minK];
   document.getElementById('r-close').textContent=S.close;
+
+  // Pattern + products
+  const PP = PATTERN_PRODUCTS[scen] || PATTERN_PRODUCTS['S1'];
+  document.getElementById('r-pattern-title').textContent = PP.patternTitle;
+  document.getElementById('r-pattern-explain').textContent = PP.patternExplain;
+  document.getElementById('r-point').textContent = PP.point;
+
+  const g1 = GUIDES[PP.prod1];
+  const g2 = GUIDES[PP.prod2];
+  document.getElementById('r-prod1-name').textContent = g1.name;
+  document.getElementById('r-prod1-why').textContent = PP.why1;
+  document.getElementById('r-prod1-btn').href = g1.url;
+  document.getElementById('r-prod2-name').textContent = g2.name;
+  document.getElementById('r-prod2-why').textContent = PP.why2;
+  document.getElementById('r-prod2-btn').href = g2.url;
+
   go('sr');
 }
 
