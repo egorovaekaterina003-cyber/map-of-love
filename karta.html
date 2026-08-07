@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Твоя карта любовного сценария</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0A0908;
+  --card:#161311;
+  --card-2:#1D1815;
+  --line:rgba(217,152,71,0.18);
+  --amber:#D99847;
+  --amber-bright:#F0B36A;
+  --red:#C43B3B;
+  --text:#F2EDE6;
+  --text-2:#A69A8C;
+  --text-3:#5C5348;
+  --green:#5A9E7A;
+  --pink:#D97BA8;
+  --radius:16px;
+  --radius-sm:10px;
+}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(ellipse 600px 400px at 85% -10%, rgba(217,152,71,0.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding:0 0 40px;}
+.screen{display:none;padding:24px 20px;}
+.screen.active{display:block;animation:fadeIn 0.4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);}
+.topbar-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--pink);}
+.topbar-stamp{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);border:1px solid var(--line);border-radius:4px;padding:3px 8px;}
+
+/* INTRO */
+#screen-intro{padding:0 0 24px;}
+.intro-hero{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:linear-gradient(135deg,#1A0F15,#0A0908);}
+.intro-hero-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;}
+.intro-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 50%);}
+.intro-hero-label{position:absolute;bottom:16px;left:20px;z-index:2;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--pink);background:rgba(10,9,8,0.55);border:1px solid rgba(217,123,168,0.3);padding:5px 12px;border-radius:20px;}
+.intro-content{padding:22px 20px 0;}
+
+.btn-primary{display:block;width:100%;background:linear-gradient(135deg,#D97BA8,#B85C8A);color:#fff;border:none;border-radius:12px;padding:17px;font-size:16px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;margin-top:24px;font-family:'Inter',sans-serif;}
+.btn-secondary{display:block;width:100%;background:transparent;color:var(--text-2);border:1.5px solid var(--line);border-radius:12px;padding:15px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;margin-top:10px;font-family:'Inter',sans-serif;}
+.btn-amber{display:block;width:100%;background:linear-gradient(135deg,var(--amber),#C77E32);color:#1A1108;border:none;border-radius:12px;padding:17px;font-size:16px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;margin-top:24px;font-family:'Inter',sans-serif;}
+
+.intro-badge{display:inline-block;background:rgba(217,123,168,0.12);border:1px solid rgba(217,123,168,0.3);border-radius:20px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);margin-bottom:20px;}
+.intro-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:28px;line-height:1.15;margin-bottom:16px;}
+.intro-title span{color:var(--pink);}
+.intro-text{font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:14px;}
+.intro-list{list-style:none;margin:16px 0;}
+.intro-list li{font-size:14px;line-height:1.6;color:var(--text-2);padding:10px 0 10px 28px;position:relative;border-bottom:1px solid var(--line);}
+.intro-list li:last-child{border-bottom:none;}
+.intro-list li::before{content:'♥';position:absolute;left:4px;color:var(--pink);font-size:10px;top:13px;}
+.intro-note{background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:14px 16px;margin:20px 0;font-size:13.5px;line-height:1.6;color:var(--text-2);}
+
+/* EMAIL */
+.email-icon{font-size:38px;text-align:center;margin-bottom:16px;}
+.email-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:10px;}
+.email-sub{font-size:14px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.5;}
+.input-field{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:16px;font-size:15px;color:var(--text);font-family:'Inter',sans-serif;margin-bottom:6px;}
+.input-field:focus{outline:none;border-color:var(--pink);}
+.input-error{color:var(--red);font-size:12px;margin-bottom:10px;display:none;}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:24px;}
+.progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.progress-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);}
+.progress-pct{font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;color:var(--pink);}
+.progress-bar{height:6px;background:var(--card);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),#F0A0C8);border-radius:4px;transition:width 0.6s ease;}
+
+/* CHAPTER HEADER */
+.chapter-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
+.chapter-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:20px;line-height:1.25;margin-bottom:4px;}
+.chapter-qnum{font-size:12px;color:var(--text-3);margin-bottom:20px;}
+
+/* SITUATION CARD */
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;margin-bottom:20px;}
+.q-text{font-size:15px;line-height:1.6;color:var(--text);margin-bottom:20px;}
+.answers{display:flex;flex-direction:column;gap:8px;}
+.answer-btn{
+  background:var(--card-2);border:1.5px solid var(--line);border-radius:10px;
+  padding:14px 16px;font-size:13.5px;color:var(--text-2);cursor:pointer;text-align:left;
+  font-family:'Inter',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:10px;
+  line-height:1.4;
+}
+.answer-btn:hover{border-color:var(--pink);color:var(--text);}
+.answer-btn .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--text-3);flex-shrink:0;}
+.answer-btn:hover .dot{border-color:var(--pink);}
+.answer-btn.selected{border-color:var(--pink);background:rgba(217,123,168,0.1);color:var(--text);}
+.answer-btn.selected .dot{background:var(--pink);border-color:var(--pink);}
+.next-btn-wrap{margin-top:16px;}
+
+/* CHAPTER END */
+.chapter-end-icon{font-size:48px;text-align:center;margin:20px 0 16px;}
+.chapter-end-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;text-align:center;margin-bottom:14px;}
+.chapter-end-text{font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:20px;}
+.chapter-end-tease{background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;font-size:14px;line-height:1.6;color:var(--text-2);}
+
+/* RESULT CARD */
+.result-header{text-align:center;margin-bottom:24px;}
+.result-badge{display:inline-block;background:rgba(217,123,168,0.15);border:1px solid rgba(217,123,168,0.4);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.result-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;margin-bottom:8px;text-align:center;}
+.result-resume{font-size:15px;line-height:1.65;color:var(--text-2);text-align:center;margin-bottom:28px;font-style:italic;}
+
+.result-block{background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;margin-bottom:14px;}
+.result-block-label{font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
+.result-block-text{font-size:14px;line-height:1.6;color:var(--text);}
+.result-block.amber{border-left-color:var(--amber);}
+.result-block.amber .result-block-label{color:var(--amber);}
+.result-block.green{border-left-color:var(--green);}
+.result-block.green .result-block-label{color:var(--green);}
+.divider{height:1px;background:var(--line);margin:20px 0;}
+
+/* UPSELL */
+.upsell-wrap{background:linear-gradient(135deg,#1D1815,#161311);border:1.5px solid var(--amber);border-radius:var(--radius);padding:24px 22px;margin-top:24px;text-align:center;}
+.upsell-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;}
+.upsell-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;margin-bottom:10px;}
+.upsell-text{font-size:13.5px;color:var(--text-2);line-height:1.55;}
+.footer-note{text-align:center;font-size:11.5px;color:var(--text-3);margin-top:20px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="topbar-logo">❤️ Карта сценария</div>
+    <div class="topbar-stamp" id="topbar-stamp">Глава 0 из 4</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-hero" style="aspect-ratio:16/9;position:relative;overflow:hidden;">
+      <img src="Photo.png" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 50%);"></div>
+      <div class="intro-hero-label">От Даши Шамашу</div>
+    </div>
+    <div class="intro-content">
+      <div class="intro-badge">❤️ Личное досье</div>
+      <h1 class="intro-title">Твоя <span>карта</span> любовного сценария</h1>
+      <p class="intro-text">Отношения редко заканчиваются случайно.</p>
+      <p class="intro-text">Чаще мы снова и снова проживаем похожую историю — только с разными мужчинами.</p>
+      <p class="intro-text">Сейчас тебе предстоит пройти четыре главы: от первого знакомства до момента, когда нужно выбрать — остаться в привычном сценарии или выйти из него.</p>
+      <div class="intro-note">Здесь нет правильных и неправильных ответов. Выбирай не тот вариант, который выглядит разумнее, а тот, который действительно ближе тебе.</div>
+      <p class="intro-text" style="margin-bottom:6px;">В конце ты увидишь свою персональную Карту:</p>
+      <ul class="intro-list">
+        <li>как мужчины воспринимают тебя в начале</li>
+        <li>что меняется, когда ты влюбляешься</li>
+        <li>какой момент запускает повторяющийся сценарий</li>
+        <li>и как могут выглядеть отношения, в которых не нужно заслуживать любовь</li>
+      </ul>
+      <button class="btn-primary" onclick="goToScreen('screen-email')">Начать свою историю →</button>
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <div class="screen" id="screen-email">
+    <div class="email-icon">✨</div>
+    <div class="email-title">Прежде чем начать</div>
+    <div class="email-sub">Оставь email — в конце мы пришлём тебе твою личную карту, чтобы ты могла вернуться к ней в любой момент.</div>
+    <input class="input-field" id="email-input" type="email" placeholder="твой@email.com">
+    <div class="input-error" id="email-error">Введи корректный email</div>
+    <button class="btn-primary" onclick="submitEmail()">Сохранить и начать →</button>
+  </div>
+
+  <!-- DIAGNOSTIC SCREEN -->
+  <div class="screen" id="screen-diagnostic">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="diag-chapter-label">Глава 1</span>
+        <span class="progress-pct" id="diag-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="diag-fill" style="width:0%"></div></div>
+    </div>
+    <div class="chapter-label" id="diag-chapter-name">Глава 1 — Как всё начинается</div>
+    <div class="chapter-title" id="diag-title">Ситуация</div>
+    <div class="chapter-qnum" id="diag-qnum">Ситуация 1 из 5</div>
+    <div class="q-card">
+      <div class="q-text" id="diag-question">Вопрос</div>
+      <div class="answers" id="diag-answers"></div>
+    </div>
+    <div class="next-btn-wrap">
+      <button class="btn-primary" id="diag-next-btn" onclick="nextQuestion()" style="display:none;">Продолжить →</button>
+    </div>
+  </div>
+
+  <!-- CHAPTER END SCREENS -->
+  <div class="screen" id="screen-chapter-end">
+    <div style="text-align:center;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);margin-bottom:16px;" id="ce-eyebrow">❤️ Первая часть карты открыта</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div style="margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
+        <span style="font-size:14px;font-weight:800;color:var(--pink);" id="ce-pct">25%</span>
+      </div>
+      <div style="height:8px;background:var(--card);border-radius:4px;overflow:hidden;">
+        <div id="ce-progress-fill" style="height:100%;background:linear-gradient(90deg,var(--pink),#F0A0C8);border-radius:4px;transition:width 1s ease;width:25%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span id="cp1" style="font-size:10px;color:var(--pink);">●</span>
+        <span id="cp2" style="font-size:10px;color:var(--text-3);">●</span>
+        <span id="cp3" style="font-size:10px;color:var(--text-3);">●</span>
+        <span id="cp4" style="font-size:10px;color:var(--text-3);">●</span>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin-bottom:20px;">
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:10px;" id="ce-intro-text">Мы пока не знаем всю историю. Но уже появилась важная закономерность.</div>
+      <div style="font-size:13px;color:var(--text-2);margin-bottom:10px;" id="ce-label-text">Мужчины считывают тебя как женщину, которая...</div>
+      <div style="font-size:15px;line-height:1.65;color:var(--text);font-style:italic;" id="ce-dynamic-text"></div>
+    </div>
+
+    <div style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:20px;" id="ce-footer-text">Пока это только первая часть истории.</div>
+    <button class="btn-primary" id="ce-btn" onclick="startNextChapter()">Продолжить →</button>
+  </div>
+
+  <!-- PRE-RESULT SCREEN -->
+  <div class="screen" id="screen-preresult">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:48px;margin-bottom:16px;">🧩</div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;margin-bottom:14px;">Мы собрали тебя по кусочкам</div>
+    </div>
+    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:14px;">За последние несколько минут ты не проходила тест.</p>
+    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:24px;">Ты проживала реальные ситуации.</p>
+    <div style="background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;margin-bottom:28px;font-size:14px;line-height:1.6;color:var(--text-2);">
+      ⚠️ Не спеши пролистывать.<br>Некоторые выводы могут удивить тебя.
+    </div>
+
+    <!-- Full progress -->
+    <div style="margin-bottom:28px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
+        <span style="font-size:14px;font-weight:800;color:var(--pink);">100%</span>
+      </div>
+      <div style="height:8px;background:var(--card);border-radius:4px;overflow:hidden;">
+        <div style="height:100%;background:linear-gradient(90deg,var(--pink),#F0A0C8);border-radius:4px;width:100%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+        <span style="font-size:10px;color:var(--pink);">●</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="showResult()">Открыть мою историю →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-header">
+      <div class="result-badge">❤️ Твоя карта</div>
+      <div class="result-title" id="res-title">Название сценария</div>
+      <div class="result-resume" id="res-resume">Резюме</div>
+    </div>
+
+    <div class="result-block" id="rb-entry">
+      <div class="result-block-label">✨ Как ты входишь в отношения</div>
+      <div class="result-block-text" id="rb-entry-text"></div>
+    </div>
+    <div class="result-block" id="rb-when-like">
+      <div class="result-block-label">💓 Что меняется, когда мужчина нравится</div>
+      <div class="result-block-text" id="rb-when-like-text"></div>
+    </div>
+    <div class="result-block" id="rb-feels">
+      <div class="result-block-label">👁 Что мужчина чувствует рядом с тобой</div>
+      <div class="result-block-text" id="rb-feels-text"></div>
+    </div>
+    <div class="result-block" id="rb-protect">
+      <div class="result-block-label">🛡 Как ты защищаешься от возможной боли</div>
+      <div class="result-block-text" id="rb-protect-text"></div>
+    </div>
+    <div class="result-block" id="rb-choose">
+      <div class="result-block-label">🧲 Какого мужчину ты бессознательно выбираешь</div>
+      <div class="result-block-text" id="rb-choose-text"></div>
+    </div>
+    <div class="result-block" id="rb-why">
+      <div class="result-block-label">🔄 Почему этот сценарий повторяется</div>
+      <div class="result-block-text" id="rb-why-text"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="result-block amber">
+      <div class="result-block-label">🏆 Твоя главная сила</div>
+      <div class="result-block-text" id="rb-strength-text"></div>
+    </div>
+    <div class="result-block" style="border-left-color:var(--text-3)">
+      <div class="result-block-label" style="color:var(--text-3)">🌱 Твоя точка изменения</div>
+      <div class="result-block-text" id="rb-growth-text"></div>
+    </div>
+    <div class="result-block green">
+      <div class="result-block-label">❤️ Как выглядит твой здоровый сценарий</div>
+      <div class="result-block-text" id="rb-healthy-text"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:20px;" id="res-cta-text"></div>
+
+    <div style="font-size:15px;line-height:1.7;color:var(--text-2);margin:0 0 20px;padding:20px 18px;background:var(--card);border-radius:var(--radius);">
+      Если бы ты пришла ко мне лично, я бы не советовала тебе всё подряд.<br><br>
+      По твоей истории уже видно, где начинается повторяющийся сценарий.<br><br>
+      Поэтому ниже — маршрут, который подходит именно тебе.
+    </div>
+    <div class="upsell-wrap">
+      <div class="upsell-eyebrow">Твой маршрут</div>
+      <div class="upsell-title">Ликвидация гайдов</div>
+      <div class="upsell-text">Карта показала твой сценарий. Гайды дают конкретные инструменты — как изменить привычные реакции и начать строить отношения, в которых не нужно заслуживать любовь.</div>
+      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" class="btn-amber" style="margin-top:20px;">Забрать мой маршрут →</a>
+    </div>
+    <p class="footer-note">Карта отправлена на твою почту.</p>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+/* ============================================================
+   ДАННЫЕ — 4 главы, 5 ситуаций каждая
+   ============================================================ */
+const CHAPTERS = [
+  {
+    id: 1,
+    name: 'Глава 1 — Как всё начинается',
+    label: 'Глава 1 из 4',
+    endIcon: '✨',
+    endTitle: 'Первая глава открыта',
+    endText: 'Теперь мы видим, как ты входишь в отношения и какое первое впечатление создаёшь.\n\nНо настоящая история начинается не в момент знакомства. Она начинается тогда, когда мужчина становится для тебя эмоционально важным.',
+    endTease: 'Следующая глава покажет, что меняется, когда ты начинаешь влюбляться.',
+    situations: [
+      {
+        title: 'Первое свидание',
+        q: 'Ты пришла на первое свидание. Мужчина тебе очень понравился, но ты пока не понимаешь, насколько понравилась ему. Как ты обычно ведёшь себя?',
+        answers: [
+          { text: 'Стараюсь быть максимально лёгкой, удобной и не показывать сложные стороны.', scales: {самоценность:-2, естественность:-2} },
+          { text: 'Много шучу и флиртую, чтобы точно вызвать интерес.', scales: {естественность:-1, устойчивость:-1} },
+          { text: 'Веду себя естественно и одновременно наблюдаю, подходит ли он мне.', scales: {самоценность:2, естественность:2, осознанность:1} },
+          { text: 'Немного закрываюсь, чтобы не показать сильную заинтересованность.', scales: {прямота:-2, близость:-1} },
+          { text: 'Начинаю внимательно следить за каждым его взглядом и словом.', scales: {устойчивость:-2, самоценность:-1} }
+        ]
+      },
+      {
+        title: 'После свидания',
+        q: 'Свидание закончилось хорошо, но он не предложил увидеться снова. Какая мысль возникает первой?',
+        answers: [
+          { text: 'Если захочет — проявится. Я не делаю выводов в тот же вечер.', scales: {устойчивость:2, самоценность:1} },
+          { text: 'Наверное, я ему не понравилась.', scales: {самоценность:-2, устойчивость:-1} },
+          { text: 'Возможно, он ждёт инициативы от меня — я могу написать, если сама хочу.', scales: {прямота:1, самоценность:1, естественность:1} },
+          { text: 'Мужчины всегда так делают: сначала очаровывают, потом исчезают.', scales: {устойчивость:-1, осознанность:-1} },
+          { text: 'Перебираю в голове всё, что сказала и сделала.', scales: {устойчивость:-2, самоценность:-1} }
+        ]
+      },
+      {
+        title: 'Инициатива',
+        q: 'На следующий день он ставит реакцию на твою историю, но не пишет. Что ты делаешь?',
+        answers: [
+          { text: 'Ничего. Реакция — не приглашение к общению.', scales: {самоценность:2, устойчивость:1} },
+          { text: 'Отвечаю на реакцию и начинаю разговор.', scales: {прямота:1, естественность:1} },
+          { text: 'Выкладываю ещё одну историю специально для него.', scales: {самоценность:-1, устойчивость:-1} },
+          { text: 'Жду, но постоянно проверяю, был ли он онлайн.', scales: {устойчивость:-2} },
+          { text: 'Решаю больше ничего не показывать и становлюсь холоднее.', scales: {прямота:-1, близость:-1} }
+        ]
+      },
+      {
+        title: 'Комплимент',
+        q: 'Он говорит: «Ты совсем не такая, как я ожидал». Как ты воспринимаешь эту фразу?',
+        answers: [
+          { text: 'С интересом уточняю, что именно он ожидал.', scales: {прямота:1, естественность:1} },
+          { text: 'Сразу думаю, что произвела неправильное впечатление.', scales: {самоценность:-2} },
+          { text: 'Стараюсь понять, какая версия меня ему понравилась бы больше.', scales: {естественность:-2, самоценность:-1} },
+          { text: 'Шучу и спокойно продолжаю разговор.', scales: {устойчивость:1, естественность:1} },
+          { text: 'Закрываюсь: мне не нравится, когда меня оценивают.', scales: {близость:-1, прямота:-1} }
+        ]
+      },
+      {
+        title: 'Выбор приоритета',
+        q: 'После встречи ты понимаешь, что мужчина тебе нравится. Что для тебя важнее всего на этом этапе?',
+        answers: [
+          { text: 'Понять, понравилась ли я ему.', scales: {самоценность:-2} },
+          { text: 'Не сделать ничего, что может его оттолкнуть.', scales: {естественность:-2, устойчивость:-1} },
+          { text: 'Узнать его лучше и понять, подходит ли он мне.', scales: {осознанность:2, самоценность:1} },
+          { text: 'Сохранить интригу и не показывать интерес слишком быстро.', scales: {прямота:-1} },
+          { text: 'Получить подтверждение, что встреча продолжится.', scales: {устойчивость:-1} }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Глава 2 — Когда он начинает нравиться',
+    label: 'Глава 2 из 4',
+    endIcon: '💓',
+    endTitle: 'Вторая глава открыта',
+    endText: 'Теперь видно, что происходит, когда симпатия становится серьёзнее.\n\nИменно в этот момент женщина может незаметно перестать выбирать сама и начать ждать, выберут ли её.',
+    endTease: 'Следующая глава покажет, что мужчина чувствует рядом с тобой, когда между вами появляется настоящая близость.',
+    situations: [
+      {
+        title: 'Изменение ритма',
+        q: 'Несколько дней он писал активно, а сегодня отвечает значительно реже. Что ты делаешь?',
+        answers: [
+          { text: 'Спокойно наблюдаю и не делаю выводов по одному дню.', scales: {устойчивость:2} },
+          { text: 'Пишу чаще, чтобы вернуть прежний ритм.', scales: {устойчивость:-2, границы:-1} },
+          { text: 'Спрашиваю напрямую, всё ли в порядке.', scales: {прямота:1} },
+          { text: 'Тоже становлюсь холоднее, чтобы он почувствовал перемену.', scales: {прямота:-2, близость:-1} },
+          { text: 'Перечитываю переписку и ищу свою ошибку.', scales: {самоценность:-1, устойчивость:-2} }
+        ]
+      },
+      {
+        title: 'Неопределённый статус',
+        q: 'Он говорит: «Давай ничего не загадывать и просто посмотрим, что получится». При этом тебе нужны серьёзные отношения.',
+        answers: [
+          { text: 'Соглашаюсь: вдруг позже он захочет большего.', scales: {границы:-2, самоценность:-1} },
+          { text: 'Уточняю, что именно он подразумевает.', scales: {прямота:1, осознанность:1} },
+          { text: 'Спокойно говорю, какой формат подходит мне, и смотрю на его действия.', scales: {границы:2, самоценность:2, прямота:1} },
+          { text: 'Отказываюсь сразу, не задавая вопросов.', scales: {границы:1, близость:-1} },
+          { text: 'Делаю вид, что меня тоже всё устраивает.', scales: {естественность:-2, границы:-2} }
+        ]
+      },
+      {
+        title: 'Отмена встречи',
+        q: 'За несколько часов до свидания он отменяет встречу без конкретного предложения перенести её.',
+        answers: [
+          { text: 'Жду, когда он сам предложит новую дату.', scales: {границы:1, устойчивость:1} },
+          { text: 'Сразу предлагаю несколько других вариантов.', scales: {самоценность:-1} },
+          { text: 'Пишу, что мне неприятно, и прошу объяснений.', scales: {прямота:1, устойчивость:-1} },
+          { text: 'Говорю, что всё нормально, хотя внутри злюсь.', scales: {естественность:-1, прямота:-2} },
+          { text: 'Удаляю его номер и прекращаю общение.', scales: {устойчивость:-1} }
+        ]
+      },
+      {
+        title: 'Границы',
+        q: 'Он предлагает встречаться только поздно вечером и почти всегда у него дома.',
+        answers: [
+          { text: 'Соглашаюсь, потому что хочу его видеть.', scales: {границы:-2, самоценность:-1} },
+          { text: 'Предлагаю другой формат и смотрю, готов ли он учитывать мои желания.', scales: {границы:2, прямота:2} },
+          { text: 'Отказываюсь, но не объясняю почему.', scales: {границы:1, прямота:-1} },
+          { text: 'Делаю вид, что мне подходит, а потом обижаюсь.', scales: {прямота:-2, устойчивость:-1} },
+          { text: 'Решаю, что он использует меня, и сразу исчезаю.', scales: {осознанность:-1, устойчивость:-1} }
+        ]
+      },
+      {
+        title: 'Собственная жизнь',
+        q: 'Когда мужчина сильно нравится, что чаще происходит с твоим привычным ритмом жизни?',
+        answers: [
+          { text: 'Почти ничего не меняется: отношения становятся частью моей жизни, а не всей жизнью.', scales: {самоценность:2, устойчивость:2} },
+          { text: 'Я чаще освобождаю расписание, чтобы быть доступной.', scales: {границы:-1, самоценность:-1} },
+          { text: 'Мне сложно сосредоточиться на работе и своих делах.', scales: {устойчивость:-2} },
+          { text: 'Я намеренно становлюсь занятее, чтобы не выглядеть слишком заинтересованной.', scales: {естественность:-1, прямота:-1} },
+          { text: 'Всё зависит от того, насколько активно он проявляется.', scales: {самоценность:-1, устойчивость:-1} }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Глава 3 — Когда появляется близость',
+    label: 'Глава 3 из 4',
+    endIcon: '🌙',
+    endTitle: 'Третья глава открыта',
+    endText: 'Теперь мы видим, как ты создаёшь близость, говоришь о важном и защищаешь себя от возможной боли.\n\nНо даже зрелое поведение не гарантирует счастливых отношений, если снова и снова выбирать мужчину, который запускает твой уязвимый сценарий.',
+    endTease: 'Финальная глава покажет, к кому тебя тянет на самом деле.',
+    situations: [
+      {
+        title: 'После близости',
+        q: 'После близости мужчина становится немного тише и отстранённее. Как ты реагируешь?',
+        answers: [
+          { text: 'Даю пространство и наблюдаю за его дальнейшими поступками.', scales: {устойчивость:2, осознанность:1} },
+          { text: 'Становлюсь ещё теплее, чтобы вернуть прежнюю близость.', scales: {самоценность:-1, устойчивость:-1} },
+          { text: 'Спрашиваю, что изменилось между нами.', scales: {прямота:1} },
+          { text: 'Тоже закрываюсь и показываю, что мне всё равно.', scales: {прямота:-2, близость:-2} },
+          { text: 'Сразу решаю, что он потерял интерес.', scales: {устойчивость:-2} }
+        ]
+      },
+      {
+        title: 'Неприятная привычка',
+        q: 'Тебе не нравится одна из его привычек, но отношения только начинаются.',
+        answers: [
+          { text: 'Промолчу, чтобы не испортить впечатление.', scales: {естественность:-1, прямота:-2} },
+          { text: 'Скажу спокойно и конкретно, не нападая.', scales: {прямота:2, близость:1} },
+          { text: 'Начну намекать, рассчитывая, что он поймёт.', scales: {прямота:-2} },
+          { text: 'Обсужу с подругами и пока буду наблюдать.', scales: {} },
+          { text: 'Решу, что люди не меняются, и начну отдаляться.', scales: {близость:-1} }
+        ]
+      },
+      {
+        title: 'Конфликт',
+        q: 'Он сделал то, что тебя задело. Что ближе всего к твоей реакции?',
+        answers: [
+          { text: 'Говорю прямо, что произошло и что я почувствовала.', scales: {прямота:2, устойчивость:1} },
+          { text: 'Становлюсь холоднее и жду, когда он сам поймёт.', scales: {прямота:-2, близость:-1} },
+          { text: 'Долго объясняю, почему он был неправ, пока он не согласится.', scales: {устойчивость:-1} },
+          { text: 'Делаю вид, что всё нормально, но запоминаю ситуацию.', scales: {прямота:-2, близость:-1} },
+          { text: 'Сначала беру паузу, затем возвращаюсь к разговору.', scales: {устойчивость:2, прямота:1} }
+        ]
+      },
+      {
+        title: 'Уязвимость',
+        q: 'Тебе нужна поддержка, но мужчина не замечает этого сам.',
+        answers: [
+          { text: 'Прошу прямо и объясняю, что именно мне нужно.', scales: {прямота:2, близость:2} },
+          { text: 'Жду, что близкий человек должен сам почувствовать.', scales: {прямота:-2} },
+          { text: 'Злюсь и говорю, что ему всё равно.', scales: {устойчивость:-2} },
+          { text: 'Ничего не прошу, чтобы не выглядеть слабой.', scales: {близость:-2, естественность:-1} },
+          { text: 'Ищу поддержку у других и отдаляюсь от него.', scales: {близость:-1} }
+        ]
+      },
+      {
+        title: 'Личное пространство',
+        q: 'Мужчина хочет провести выходные отдельно с друзьями.',
+        answers: [
+          { text: 'Спокойно отношусь к этому и планирую своё время.', scales: {самоценность:1, устойчивость:2} },
+          { text: 'Соглашаюсь, но думаю, что ему со мной скучно.', scales: {самоценность:-1, устойчивость:-1} },
+          { text: 'Прошу отменить планы, потому что выходные должны быть для пары.', scales: {границы:-1, устойчивость:-1} },
+          { text: 'Тоже демонстративно строю планы без него.', scales: {прямота:-1} },
+          { text: 'Обсуждаю баланс совместного и личного времени.', scales: {прямота:2, близость:1} }
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Глава 4 — Кого ты выбираешь',
+    label: 'Глава 4 из 4',
+    endIcon: '🧩',
+    endTitle: 'Все части истории собраны',
+    endText: 'Ты прошла путь от первого знакомства до момента выбора.\n\nМы объединили все твои реакции и увидели не отдельные ответы, а общую логику отношений.',
+    endTease: '⚠️ Не спеши. Некоторые выводы могут оказаться совсем не такими, как ты ожидала.',
+    situations: [
+      {
+        title: 'Не готов к отношениям',
+        q: 'Он говорит, что не готов к серьёзным отношениям, но не хочет тебя терять.',
+        answers: [
+          { text: 'Останусь рядом: возможно, позже он будет готов.', scales: {осознанность:-2, границы:-2} },
+          { text: 'Предложу дружить, хотя буду надеяться на большее.', scales: {самоценность:-1, границы:-1} },
+          { text: 'Спрошу себя, устраивает ли меня такой формат, и приму решение по его реальным действиям.', scales: {осознанность:2, границы:2} },
+          { text: 'Попытаюсь доказать, что со мной отношения могут быть другими.', scales: {самоценность:-2, осознанность:-2} },
+          { text: 'Прерву общение, даже если он мне очень нравится.', scales: {границы:2, устойчивость:1} }
+        ]
+      },
+      {
+        title: 'Два мужчины',
+        q: 'Перед тобой два мужчины. Первый — яркий и непредсказуемый, вызывает сильные эмоции, но редко бывает рядом. Второй — последовательный и заинтересованный, но рядом с ним нет эмоциональных качелей. К кому тебя потянет сильнее?',
+        answers: [
+          { text: 'Однозначно к первому.', scales: {осознанность:-2} },
+          { text: 'Скорее к первому, хотя понимаю риск.', scales: {осознанность:-1} },
+          { text: 'Мне нужны и эмоции, и надёжность — буду смотреть на поступки обоих.', scales: {осознанность:1} },
+          { text: 'Скорее ко второму.', scales: {осознанность:2} },
+          { text: 'Однозначно ко второму.', scales: {осознанность:2, устойчивость:1} }
+        ]
+      },
+      {
+        title: 'Красные флаги',
+        q: 'Ты замечаешь тревожный сигнал, но мужчина очень нравится.',
+        answers: [
+          { text: 'Надеюсь, что со мной он будет вести себя иначе.', scales: {осознанность:-2} },
+          { text: 'Наблюдаю, повторяется ли это, и не оправдываю очевидное.', scales: {осознанность:2, устойчивость:1} },
+          { text: 'Сразу прекращаю отношения при любом сомнении.', scales: {устойчивость:-1} },
+          { text: 'Спрашиваю его напрямую и оцениваю не слова, а последующие действия.', scales: {прямота:1, осознанность:2} },
+          { text: 'Стараюсь стать для него достаточно важной, чтобы проблема исчезла.', scales: {самоценность:-2, осознанность:-1} }
+        ]
+      },
+      {
+        title: 'Сильные эмоции',
+        q: 'Какая история чаще кажется тебе настоящей любовью?',
+        answers: [
+          { text: 'Та, где невозможно расслабиться и постоянно тянет к человеку.', scales: {осознанность:-2, устойчивость:-1} },
+          { text: 'Та, где есть страсть, даже если мало стабильности.', scales: {осознанность:-1} },
+          { text: 'Та, где есть и притяжение, и последовательные поступки.', scales: {осознанность:2} },
+          { text: 'Та, где спокойно, даже если страсть не очень сильная.', scales: {осознанность:1} },
+          { text: 'Мне сложно отличить любовь от сильной эмоциональной зависимости.', scales: {осознанность:-2} }
+        ]
+      },
+      {
+        title: 'Потенциал или реальность',
+        q: 'Мужчина много говорит о совместном будущем, но его реальные действия пока непоследовательны.',
+        answers: [
+          { text: 'Верю словам — ему просто нужно время.', scales: {осознанность:-2} },
+          { text: 'Поддерживаю его, чтобы он смог реализовать свой потенциал.', scales: {границы:-1, осознанность:-1} },
+          { text: 'Смотрю прежде всего на повторяющиеся поступки.', scales: {осознанность:2, самоценность:1} },
+          { text: 'Требую немедленно доказать серьёзность намерений.', scales: {устойчивость:-1} },
+          { text: 'Остаюсь, пока надежда сильнее разочарования.', scales: {границы:-2, самоценность:-1} }
+        ]
+      }
+    ]
+  }
+];
+
+// Mini-portrait dynamic texts per chapter per scenario
+const MINI_PORTRAITS = {
+  1: { // Как мужчины видят тебя
+    стараюсь_понравиться: 'умеет создавать тепло и лёгкость — но иногда теряет себя, когда очень хочет понравиться.',
+    чем_дальше_тем_сильнее: 'живая и эмоциональная — её чувства настоящие, и мужчины это ощущают.',
+    понимаю_но_жду: 'умная и наблюдательная — видит людей глубже, чем они замечают сами.',
+    проще_закрыться: 'глубокая и загадочная — за внешней сдержанностью скрывается много.',
+    умею_любить: 'щедрая и внимательная — рядом с ней мужчина чувствует себя нужным.',
+    спокойствие_скучно: 'яркая и притягивающая — с ней всегда что-то происходит.',
+    выбираю_себя: 'уверенная и живая — с ней интересно, и она не растворяется.'
+  },
+  2: { // Что меняется при влюблённости
+    стараюсь_понравиться: 'естественность уступает контролю — хочется сказать правильное, выглядеть лучше, не спугнуть.',
+    чем_дальше_тем_сильнее: 'любая пауза превращается в тревогу, а неопределённость усиливает чувство — вместо того чтобы его снижать.',
+    понимаю_но_жду: 'осознанность отступает, и надежда берёт своё — остаётся рядом дольше, чем позволяют реальные поступки.',
+    проще_закрыться: 'именно тогда, когда важно открыться, включается защита — дистанция, молчание, «мне всё равно».',
+    умею_любить: 'вкладывается полностью — своё время, внимание, заботу — иногда раньше, чем видит встречное движение.',
+    спокойствие_скучно: 'непредсказуемый мужчина кажется захватывающим, а стабильный — недостаточно интересным.',
+    выбираю_себя: 'остаётся собой — интерес есть, но он не превращается в тревогу и не меняет ритм жизни.'
+  },
+  3: { // Что мужчина чувствует рядом
+    стараюсь_понравиться: 'тепло и внимание — но иногда слишком сильное желание угодить, за которым исчезает та самая лёгкость.',
+    чем_дальше_тем_сильнее: 'глубокую вовлечённость — и одновременно её зависимость от его действий.',
+    понимаю_но_жду: 'принятие и терпение — комфортно для него, но не всегда работает в её пользу.',
+    проще_закрыться: 'глубину — но не всегда понимает, как к ней подобраться.',
+    умею_любить: 'принятие и заботу — редкость и ценность, которая иногда появляется раньше, чем сложилось доверие.',
+    спокойствие_скучно: 'живой интерес — но только если успевает поддерживать напряжение.',
+    выбираю_себя: 'что-то редкое: живого человека, которому с ним интересно — но который не зависит от его реакции.'
+  }
+};
+
+const CE_CONFIGS = {
+  1: {
+    eyebrow: '❤️ Первая часть карты открыта',
+    intro: 'Мы пока не знаем всю историю. Но уже появилась важная закономерность.',
+    label: 'Мужчины считывают тебя как женщину, которая...',
+    footer: 'Пока это только первая часть истории.',
+    pct: '25%',
+    width: '25%',
+    dots: [true, false, false, false]
+  },
+  2: {
+    eyebrow: '❤️ Уже становится понятно...',
+    intro: 'Теперь мы видим, что происходит, когда мужчина становится эмоционально важным.',
+    label: 'Когда ты влюбляешься...',
+    footer: 'Карта собирается. Впереди самое важное.',
+    pct: '50%',
+    width: '50%',
+    dots: [true, true, false, false]
+  },
+  3: {
+    eyebrow: '❤️ Картина становится объёмнее...',
+    intro: 'Теперь видно, что мужчина чувствует рядом с тобой.',
+    label: 'Рядом с тобой мужчина ощущает...',
+    footer: 'Осталась последняя часть — и тогда картина будет полной.',
+    pct: '75%',
+    width: '75%',
+    dots: [true, true, true, false]
+  }
+};
+
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const SCALES = ['самоценность','естественность','устойчивость','границы','прямота','близость','осознанность','потенциал'];
+let state = {
+  email: '',
+  chapter: 0,  // 0 = не начато
+  question: 0,
+  answers: {},  // [chapter][question] = answerIndex
+  scales: {}
+};
+SCALES.forEach(s => state.scales[s] = 50);
+
+let currentChapter = 0;
+let currentQuestion = 0;
+let selectedAnswer = null;
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goToScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function updateTopbar(){
+  const stamp = document.getElementById('topbar-stamp');
+  if(currentChapter === 0){
+    stamp.textContent = 'Глава 0 из 4';
+  } else {
+    stamp.textContent = `Глава ${currentChapter} из 4`;
+  }
+}
+
+/* ============================================================
+   EMAIL
+   ============================================================ */
+function submitEmail(){
+  const val = document.getElementById('email-input').value.trim();
+  const errEl = document.getElementById('email-error');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+  state.email = val;
+  startChapter(1);
+}
+
+/* ============================================================
+   CHAPTER / QUESTION LOGIC
+   ============================================================ */
+function startChapter(chapterNum){
+  currentChapter = chapterNum;
+  currentQuestion = 0;
+  selectedAnswer = null;
+  updateTopbar();
+  renderQuestion();
+  goToScreen('screen-diagnostic');
+}
+
+function renderQuestion(){
+  const ch = CHAPTERS[currentChapter - 1];
+  const sit = ch.situations[currentQuestion];
+  const total = ch.situations.length;
+  const pct = Math.round((currentQuestion / total) * 100);
+
+  document.getElementById('diag-chapter-label').textContent = ch.label;
+  document.getElementById('diag-chapter-name').textContent = ch.name;
+  document.getElementById('diag-pct').textContent = pct + '%';
+  document.getElementById('diag-fill').style.width = pct + '%';
+  document.getElementById('diag-title').textContent = sit.title;
+  document.getElementById('diag-qnum').textContent = `Ситуация ${currentQuestion + 1} из ${total}`;
+  document.getElementById('diag-question').textContent = sit.q;
+
+  const answersEl = document.getElementById('diag-answers');
+  answersEl.innerHTML = '';
+  sit.answers.forEach((a, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.innerHTML = '<div class="dot"></div><span>' + a.text + '</span>';
+    btn.onclick = () => selectAnswer(i);
+    answersEl.appendChild(btn);
+  });
+
+  document.getElementById('diag-next-btn').style.display = 'none';
+  selectedAnswer = null;
+}
+
+function selectAnswer(idx){
+  selectedAnswer = idx;
+  document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('diag-next-btn').style.display = 'block';
+
+  // Apply scales
+  const ch = CHAPTERS[currentChapter - 1];
+  const sit = ch.situations[currentQuestion];
+  const scales = sit.answers[idx].scales;
+  Object.entries(scales).forEach(([k, v]) => {
+    if(state.scales[k] !== undefined){
+      state.scales[k] = Math.max(0, Math.min(100, state.scales[k] + v * 5));
+    }
+  });
+}
+
+function nextQuestion(){
+  if(selectedAnswer === null) return;
+  const ch = CHAPTERS[currentChapter - 1];
+  currentQuestion++;
+  if(currentQuestion >= ch.situations.length){
+    showChapterEnd();
+  } else {
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showChapterEnd(){
+  const scenario = getScenario();
+
+  if(currentChapter >= 4){
+    goToScreen('screen-preresult');
+    return;
+  }
+
+  const cfg = CE_CONFIGS[currentChapter];
+  const dynamicText = MINI_PORTRAITS[currentChapter][scenario] || '';
+
+  document.getElementById('ce-eyebrow').textContent = cfg.eyebrow;
+  document.getElementById('ce-intro-text').textContent = cfg.intro;
+  document.getElementById('ce-label-text').textContent = cfg.label;
+  document.getElementById('ce-dynamic-text').textContent = dynamicText;
+  document.getElementById('ce-footer-text').textContent = cfg.footer;
+  document.getElementById('ce-pct').textContent = cfg.pct;
+  document.getElementById('ce-progress-fill').style.width = cfg.width;
+
+  ['cp1','cp2','cp3','cp4'].forEach((id, i) => {
+    document.getElementById(id).style.color = cfg.dots[i] ? 'var(--pink)' : 'var(--text-3)';
+  });
+
+  document.getElementById('ce-btn').textContent = 'Продолжить историю →';
+  document.getElementById('ce-btn').onclick = startNextChapter;
+
+  goToScreen('screen-chapter-end');
+}
+
+function startNextChapter(){
+  startChapter(currentChapter + 1);
+}
+
+/* ============================================================
+   RESULT
+   ============================================================ */
+function getLevel(scale){
+  const v = state.scales[scale];
+  if(v >= 75) return 5;
+  if(v >= 60) return 4;
+  if(v >= 45) return 3;
+  if(v >= 30) return 2;
+  return 1;
+}
+
+function getScenario(){
+  const sv = state.scales.самоценность;
+  const en = state.scales.естественность;
+  const us = state.scales.устойчивость;
+  const gr = state.scales.границы;
+  const pr = state.scales.прямота;
+  const bl = state.scales.близость;
+  const os = state.scales.осознанность;
+
+  const lsv = getLevel('самоценность');
+  const len = getLevel('естественность');
+  const lus = getLevel('устойчивость');
+  const lgr = getLevel('границы');
+  const lpr = getLevel('прямота');
+  const lbl = getLevel('близость');
+  const los = getLevel('осознанность');
+
+  if(lsv <= 2 && len <= 2) return 'стараюсь_понравиться';
+  if(los <= 2 && lus <= 2) return 'чем_дальше_тем_сильнее';
+  if(lgr <= 2 && los >= 3) return 'понимаю_но_жду';
+  if(lpr <= 2 && lbl <= 2) return 'проще_закрыться';
+  if(lbl >= 4 && lsv <= 2) return 'умею_любить';
+  if(los <= 2) return 'спокойствие_скучно';
+  return 'выбираю_себя';
+}
+
+const SCENARIOS = {
+  стараюсь_понравиться: {
+    title: '«Я стараюсь быть той, которую выберут»',
+    resume: 'Ты быстро замечаешь, что нравится мужчине, и незаметно начинаешь подстраиваться. История часто начинается красиво — но постепенно сложнее понять, где ты настоящая, а где стараешься сохранить его интерес.',
+    entry: 'На первых этапах ты умеешь быть лёгкой и приятной в общении. Но когда мужчина начинает по-настоящему нравиться, естественность уступает место контролю — хочется сказать правильное, не показать лишнего, произвести нужное впечатление.',
+    whenLike: 'Когда мужчина становится важным, твоя энергия переключается с «кто он?» на «нравлюсь ли я ему?». Это незаметно, но именно в этот момент ты перестаёшь быть собой — и именно это считывается.',
+    feels: 'Мужчина чувствует рядом с тобой тепло и внимание. Но иногда — слишком сильное желание угодить. И именно там, где ты стараешься, исчезает та самая лёгкость, которая создаёт настоящее притяжение.',
+    protect: 'Ты защищаешься через соответствие ожиданиям: стараешься не конфликтовать, не показывать сложных сторон, быть удобной. Это снижает риск отвержения — но также снижает глубину близости.',
+    choose: 'Тебя притягивают мужчины, чьё одобрение нужно заслужить. Рядом с тем, кто принимает тебя просто так, может казаться, что «нет химии».',
+    why: 'Сценарий повторяется, потому что ты входишь в отношения с позиции «докажу, что достойна» — а не с позиции «посмотрим, достоин ли он меня». Когда это меняется, меняется и весь сценарий.',
+    strength: 'Твоя главная сила — способность создавать тепло и комфорт в общении. Мужчины чувствуют себя рядом с тобой принятыми. Это редкое и ценное качество.',
+    growth: 'Точка изменения — самоценность. Не как уверенность в себе, а как внутреннее разрешение оставаться собой — даже когда мужчина ещё не сказал, что ты ему нравишься.',
+    healthy: 'В здоровом сценарии ты входишь в отношения с вопросом «кто этот человек?», а не «понравлюсь ли я ему?». Твоя естественность становится твоей силой — и именно она создаёт настоящее притяжение.'
+  },
+  чем_дальше_тем_сильнее: {
+    title: '«Чем он дальше, тем сильнее тянет»',
+    resume: 'Твоё чувство усиливается не только от близости, но и от неопределённости. Когда мужчина становится менее доступным, внутри включается желание вернуть прежний контакт — и это делает его ещё более значимым.',
+    entry: 'В начале общения ты можешь быть лёгкой и открытой. Но как только появляется первая неопределённость — первая пауза или снижение активности — что-то внутри начинает работать против тебя.',
+    whenLike: 'Именно когда мужчина нравится, паузы и неопределённость становятся невыносимыми. Желание вернуть контакт усиливается именно там, где лучше всего было бы оставаться в своей жизни.',
+    feels: 'Мужчина чувствует твою вовлечённость — и одновременно её зависимость от его действий. Это создаёт неосознанное ощущение власти, которое может привлекать определённый тип мужчин.',
+    protect: 'Ты защищаешься через активные действия: пишешь, проверяешь, ищешь способ вернуть внимание. Это даёт ощущение контроля — но на самом деле усиливает тревогу.',
+    choose: 'Тебя притягивают непредсказуемые мужчины — те, чья доступность нестабильна. Именно с ними сильнее всего ощущается «влечение», которое на самом деле является тревогой.',
+    why: 'Сценарий повторяется, потому что нестабильность ощущается как страсть. Когда мозг научится отличать тревогу от влечения, выбор мужчин изменится — и с ним изменится всё.',
+    strength: 'Твоя главная сила — глубина чувств. Ты способна любить по-настоящему, быть эмоционально включённой и создавать сильную связь. Это ценно в отношениях с правильным человеком.',
+    growth: 'Точка изменения — эмоциональная устойчивость. Не безразличие, а способность оставаться в себе, когда что-то идёт не по плану. Это то, что превращает тревогу в уверенность.',
+    healthy: 'В здоровом сценарии пауза в переписке — это просто пауза. Ты замечаешь её, но продолжаешь жить своей жизнью. И именно эта лёгкость создаёт настоящее притяжение — а не его отсутствие.'
+  },
+  понимаю_но_жду: {
+    title: '«Я всё понимаю, но слишком долго жду»',
+    resume: 'Ты часто видишь ситуацию достаточно ясно, но откладываешь решение. Надежда, что мужчина изменится или определится, удерживает тебя дольше, чем его реальные поступки.',
+    entry: 'В начале ты ведёшь себя осознанно: видишь человека, оцениваешь поступки. Но когда возникает привязанность, осознанность отступает — и включается надежда.',
+    whenLike: 'Когда мужчина нравится, его потенциал начинает казаться важнее реальности. Ты остаёшься рядом не потому что тебя устраивает то, что есть — а потому что веришь, что скоро станет лучше.',
+    feels: 'Мужчина чувствует рядом с тобой принятие и терпение. Это комфортно для него — но не всегда работает в твою пользу. Там, где нет последствий за неопределённость, нет и стимула меняться.',
+    protect: 'Ты защищаешься через ожидание: не выдвигаешь требований, не ставишь ультиматумов, надеешься что само разрешится. Это снижает конфликт — но продлевает неопределённость.',
+    choose: 'Тебя привлекают мужчины с потенциалом — умные, интересные, с глубиной. Но реальные поступки расходятся с ожиданиями. И ты остаёшься, веря в версию, которой ещё нет.',
+    why: 'Сценарий повторяется, потому что уход ощущается как потеря того, во что уже вложено. Но оставаться ради прошлых инвестиций — это ловушка. Выход — оценивать то, что есть сейчас.',
+    strength: 'Твоя главная сила — осознанность и глубина восприятия. Ты видишь людей, понимаешь ситуации, умеешь анализировать. Это редкое качество, которое работает на тебя — когда не заглушается надеждой.',
+    growth: 'Точка изменения — личные границы. Не жёсткие правила, а внутреннее ощущение: что тебе подходит, а что нет. И готовность уйти, когда реальность не совпадает с тем, что тебе нужно.',
+    healthy: 'В здоровом сценарии ты выбираешь по поступкам, а не по потенциалу. Ждёшь не потому что надеешься — а потому что видишь реальное движение. И уходишь тогда, когда движения нет.'
+  },
+  проще_закрыться: {
+    title: '«Мне проще закрыться, чем показать, что больно»',
+    resume: 'Когда отношения становятся важными, ты защищаешься дистанцией, молчанием или внешним безразличием. Мужчина может не понять, что за холодностью скрывается потребность в близости.',
+    entry: 'На первых этапах ты можешь казаться загадочной и сдержанной. Это привлекает — но по мере сближения дистанция начинает работать против тебя.',
+    whenLike: 'Именно когда мужчина становится важным, открытость пугает больше всего. Слишком много поставлено на карту. И вместо близости — защита: молчание, холодность, «мне всё равно».',
+    feels: 'Мужчина чувствует рядом с тобой глубину — но не всегда понимает, как к ней подобраться. Он может интерпретировать твою закрытость как отсутствие интереса и отдалиться.',
+    protect: 'Ты защищаешься через дистанцию и молчание. Когда больно — закрываешься. Когда важно — не говоришь. Это защищает от немедленной боли — но создаёт пустоту там, где могла бы быть близость.',
+    choose: 'Тебя привлекают мужчины, которые умеют «считывать» без слов — интуитивные, чуткие. Но таких мало. Большинство нуждается в прямом общении, которое пока даётся тяжело.',
+    why: 'Сценарий повторяется, потому что открытость ощущается как уязвимость, а уязвимость — как опасность. Но именно она создаёт настоящую близость. Без неё отношения остаются на поверхности.',
+    strength: 'Твоя главная сила — эмоциональная глубина. Когда ты открываешься, это по-настоящему трогает людей. Ты умеешь чувствовать тонко и точно — это редкость.',
+    growth: 'Точка изменения — прямота в общении. Не как способность говорить всё подряд, а как умение назвать важное: что задело, что нужно, что чувствуешь. Без этого близость невозможна.',
+    healthy: 'В здоровом сценарии открытость перестаёт быть страшной — потому что ты выбираешь мужчину, рядом с которым безопасно. И именно эта безопасность позволяет тебе быть настоящей.'
+  },
+  умею_любить: {
+    title: '«Я умею любить, но забываю выбирать»',
+    resume: 'Ты умеешь быть тёплой, внимательной и эмоционально включённой. Но иногда отдаёшь слишком много до того, как увидела встречное движение — и отношения начинают строиться вокруг его потребностей.',
+    entry: 'В начале ты создаёшь ощущение тепла и принятия. Это очень ценно. Но иногда эта открытость появляется раньше, чем сложилось понимание, кто этот человек на самом деле.',
+    whenLike: 'Когда мужчина нравится, ты вкладываешься полностью. Своё время, внимание, эмоции. Не потому что требуешь того же в ответ — просто так привыкла любить. Но дисбаланс незаметно растёт.',
+    feels: 'Мужчина чувствует рядом с тобой принятие и заботу. Это редкость и ценность. Но иногда — слишком много, слишком рано. И это может создавать ощущение, что у него нет пространства для своего вклада.',
+    protect: 'Ты защищаешься через отдачу: если я буду достаточно хорошей, заботливой, нужной — всё будет хорошо. Но такая защита незаметно превращает отношения в одностороннее движение.',
+    choose: 'Тебя привлекают мужчины, которым нужна твоя сила. Те, кого хочется поддержать, вдохновить, «вытащить». Но именно с ними ты чаще всего оказываешься в роли дающей — а не получающей.',
+    why: 'Сценарий повторяется, потому что любовь ощущается как действие, а не как состояние. Ты делаешь, чтобы любить — вместо того чтобы быть рядом с тем, кто делает для тебя.',
+    strength: 'Твоя главная сила — способность любить глубоко и по-настоящему. Мужчина рядом с тобой чувствует себя принятым и нужным. Это основа настоящей близости.',
+    growth: 'Точка изменения — самоценность. Разрешение получать так же, как отдаёшь. Замечать, что происходит с твоей стороны — и выбирать того, кто движется навстречу.',
+    healthy: 'В здоровом сценарии ты всё так же умеешь любить — но любишь того, кто любит в ответ. Не потому что заслужила, а потому что выбрала человека, который видит тебя.'
+  },
+  спокойствие_скучно: {
+    title: '«Спокойствие кажется отсутствием химии»',
+    resume: 'Стабильность может ощущаться слишком тихо, а неопределённость — как сильная любовь. Поэтому самые яркие эмоции нередко возникают рядом с мужчинами, с которыми сложнее всего построить безопасную связь.',
+    entry: 'В начале общения ты хорошо чувствуешь «искру». Но эта искра не всегда про совместимость — иногда она про напряжение, тревогу и незакрытую потребность в чьём-то одобрении.',
+    whenLike: 'Мужчина, который ведёт себя ровно и предсказуемо, может казаться недостаточно интересным. А тот, кто непредсказуем — захватывающим. Это не про вкус, это про привычку системы к определённому уровню стресса.',
+    feels: 'Мужчина рядом с тобой чувствует живой интерес — но только если успевает поддерживать напряжение. Тот, кто просто любит и остаётся, может не получать от тебя той же отдачи.',
+    protect: 'Ты защищаешься через выбор «интересных» мужчин: с ними всегда что-то происходит, всегда есть о чём переживать. Это создаёт иллюзию насыщенности — но не даёт настоящего покоя.',
+    choose: 'Тебя притягивают мужчины с харизмой, загадочностью, нестабильностью. Те, кто «не такой как все». Именно с ними возникает ощущение, что это «оно». Но потом история повторяется.',
+    why: 'Сценарий повторяется, потому что нервная система привыкла к определённому уровню возбуждения в отношениях. Покой ощущается как скука — пока не появляется опыт отношений, в которых безопасно.',
+    strength: 'Твоя главная сила — яркость восприятия и эмоциональная живость. Ты умеешь чувствовать глубоко и создавать настоящий контакт. Это притягивает людей.',
+    growth: 'Точка изменения — осознанность выбора. Умение видеть разницу между «между нами есть напряжение» и «между нами есть химия». Это разные вещи — и их можно научиться различать.',
+    healthy: 'В здоровом сценарии стабильность перестаёт казаться скучной — потому что появляется опыт, что покой может быть глубоким. Что безопасность не убивает страсть, а создаёт почву для настоящей близости.'
+  },
+  выбираю_себя: {
+    title: '«Я выбираю и себя, и отношения»',
+    resume: 'Ты способна проявлять интерес, не теряя себя; создавать близость, не растворяясь; и оценивать мужчину по поступкам, а не только по силе эмоций.',
+    entry: 'В начале общения ты остаёшься собой — не стараешься произвести впечатление любой ценой, но и не прячешься. Это и создаёт настоящее притяжение.',
+    whenLike: 'Когда мужчина нравится, ты это чувствуешь — но не теряешь ритм своей жизни. Интерес есть, но он не превращается в тревогу.',
+    feels: 'Мужчина рядом с тобой чувствует что-то редкое: живого человека, которому с ним интересно — но который не зависит от его реакции. Именно это создаёт желание быть рядом.',
+    protect: 'Твои защитные реакции есть — они есть у всех. Но они не управляют твоим поведением. Ты умеешь замечать тревогу и не действовать из неё.',
+    choose: 'Ты выбираешь мужчин по поступкам, а не только по ощущениям. Это не значит, что нет эмоций — просто они не единственный критерий.',
+    why: 'Твой сценарий — устойчивый. Главный риск проявляется лишь в особенно значимых историях, когда ставки особенно высоки. Именно там стоит быть внимательной.',
+    strength: 'Твоя главная сила — целостность. Ты умеешь быть в отношениях, оставаясь собой. Это основа не просто хороших — а по-настоящему близких отношений.',
+    growth: 'Точка роста — не исправить что-то сломанное, а углубить то, что уже есть. Особенно в моменты, когда ставки высоки и страх потери сильнее обычного.',
+    healthy: 'Твой здоровый сценарий — уже во многом твоя реальность. Продолжай выбирать себя, говорить прямо и оставаться в своей жизни — независимо от того, что делает мужчина рядом.'
+  }
+};
+
+function getMaxMin(){
+  let maxScale = null, maxVal = -1;
+  let minScale = null, minVal = 101;
+  SCALES.forEach(s => {
+    if(state.scales[s] > maxVal){ maxVal = state.scales[s]; maxScale = s; }
+    if(state.scales[s] < minVal){ minVal = state.scales[s]; minScale = s; }
+  });
+  return { maxScale, minScale };
+}
+
+const SCALE_NAMES = {
+  самоценность: 'Самоценность',
+  естественность: 'Естественность',
+  устойчивость: 'Эмоциональная устойчивость',
+  границы: 'Личные границы',
+  прямота: 'Прямота в общении',
+  близость: 'Способность создавать близость',
+  осознанность: 'Осознанность выбора',
+  потенциал: 'Потенциал отношений'
+};
+
+function showResult(){
+  const scenario = getScenario();
+  const s = SCENARIOS[scenario];
+  const { maxScale, minScale } = getMaxMin();
+
+  document.getElementById('res-title').textContent = s.title;
+  document.getElementById('res-resume').textContent = s.resume;
+  document.getElementById('rb-entry-text').textContent = s.entry;
+  document.getElementById('rb-when-like-text').textContent = s.whenLike;
+  document.getElementById('rb-feels-text').textContent = s.feels;
+  document.getElementById('rb-protect-text').textContent = s.protect;
+  document.getElementById('rb-choose-text').textContent = s.choose;
+  document.getElementById('rb-why-text').textContent = s.why;
+  document.getElementById('rb-strength-text').textContent = '✦ ' + SCALE_NAMES[maxScale] + '\n\n' + s.strength;
+  document.getElementById('rb-growth-text').textContent = '✦ ' + SCALE_NAMES[minScale] + '\n\n' + s.growth;
+  document.getElementById('rb-healthy-text').textContent = s.healthy;
+  document.getElementById('res-cta-text').innerHTML = 'С тобой всё в порядке.<br><br>Ты не «слишком сложная», не «слишком эмоциональная» и не женщина, которой просто не везёт.<br><br>Эта карта показала, где именно начинается твой сценарий.<br><br><strong>Но понимание — только первый шаг.</strong>';
+
+  goToScreen('screen-result');
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  updateTopbar();
+});
+</script>
+</body>
+</html>
