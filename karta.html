@@ -636,31 +636,18 @@ function pickPattern(group){
    СЦЕНАРИИ (финальные)
 ══════════════════════════════════════════════════ */
 function buildScenario(fId, lId, mId, rId){
-  const ri = parseInt(rId[1]);
-  const fi = parseInt(fId[1]);
-  const li = parseInt(lId[1]);
-  const mi = parseInt(mId[1]);
-
-  // Незавершённые отношения → S8 (Гайд про месть — только здесь)
-  if(sc.AX >= 65 && sc.AT >= 65 && sc.PC <= 45) return 'S8';
-  // Страх одиночества
-  if(sc.IN <= 40 && sc.BD <= 40 && sc.AX >= 65) return 'S11';
-  // Высокая автономность
-  if(sc.IN >= 70 && sc.OP <= 45 && sc.NA <= 40) return 'S9';
-  // Зрелый паттерн
-  if(sc.SW >= 65 && sc.DR >= 65 && sc.PC >= 65 && sc.BD >= 60) return 'S12';
-  // Молчаливая обида
-  if(sc.DR <= 40 && sc.CT >= 60 && sc.OP <= 50) return 'S7';
-  // Идеальный образ
-  if(sc.CT >= 65 && sc.NA >= 60 && sc.OP <= 50 && sc.SW <= 55) return 'S10';
-  // Основные 6
-  if(ri<=1 && fi<=2) return 'S1';
-  if(ri===2 || ri===4) return 'S2';
-  if(ri===3 || ri===5) return 'S3';
-  if(ri===6) return 'S4';
-  if(ri===7) return 'S5';
-  if(ri===8) return 'S6';
-  return 'S1';
+  if(sc.AX>=65&&sc.AT>=65&&sc.PC<=45) return 'S8';
+  if(sc.IN<=40&&sc.BD<=40&&sc.AX>=65) return 'S11';
+  if(sc.IN>=70&&sc.OP<=45&&sc.NA<=40) return 'S9';
+  if(sc.SW>=65&&sc.DR>=65&&sc.PC>=65&&sc.BD>=60) return 'S12';
+  if(sc.DR<=40&&sc.CT>=60&&sc.OP<=50) return 'S7';
+  if(sc.CT>=65&&sc.NA>=60&&sc.OP<=50&&sc.SW<=55) return 'S10';
+  if(sc.SW<=50&&sc.AX>=55&&sc.PC>=50) return 'S1';
+  if(sc.PC<=45&&sc.AX>=55&&sc.AT>=55) return 'S2';
+  if(sc.PC<=50&&sc.BD<=50&&sc.AX<55) return 'S3';
+  if(sc.NA>=65&&sc.SW<=50&&sc.PC<=50) return 'S4';
+  if(sc.PC<=50&&sc.AT>=55&&sc.AX<55) return 'S5';
+  return 'S6';
 }
 
 const SCENARIOS = {
@@ -964,8 +951,13 @@ function showResult(){
   if(!picks.L) picks.L=pickPattern('L');
   if(!picks.M) picks.M=pickPattern('M');
 
-  const scen=buildScenario(picks.F.id,picks.L.id,picks.M.id,picks.R.id);
-  const S=SCENARIOS[scen];
+  const scen=buildScenario(
+    picks.F?picks.F.id:'F1',
+    picks.L?picks.L.id:'L1',
+    picks.M?picks.M.id:'M1',
+    picks.R?picks.R.id:'R1'
+  );
+  const S=SCENARIOS[scen]||SCENARIOS['S1'];
   const {maxK,minK}=getTopMin();
 
   document.getElementById('r-title').textContent=S.title;
