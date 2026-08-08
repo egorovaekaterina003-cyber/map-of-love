@@ -984,6 +984,43 @@ const F_TEXTS = {
   }
 };
 
+
+function calcLResult(){
+  let lsc={L1:0,L2:0,L3:0,L4:0,L5:0,L6:0,L7:0};
+  CHAPTERS[1].situations.forEach((sit,qi)=>{
+    if(state_ch2_answers[qi]===undefined) return;
+    const ans=sit.a[state_ch2_answers[qi]];
+    if(ans&&ans.l) Object.entries(ans.l).forEach(([k,v])=>{if(lsc[k]!==undefined)lsc[k]+=v;});
+  });
+  let sorted=Object.entries(lsc).sort((a,b)=>b[1]-a[1]);
+  window.lPrimary=sorted[0][0];
+  window.lSecondary=sorted[1][0];
+}
+
+function calcMResult(){
+  let msc={M1:0,M2:0,M3:0,M4:0,M5:0,M6:0,M7:0};
+  CHAPTERS[2].situations.forEach((sit,qi)=>{
+    if(state_ch3_answers[qi]===undefined) return;
+    const ans=sit.a[state_ch3_answers[qi]];
+    if(ans&&ans.m) Object.entries(ans.m).forEach(([k,v])=>{if(msc[k]!==undefined)msc[k]+=v;});
+  });
+  let sorted=Object.entries(msc).sort((a,b)=>b[1]-a[1]);
+  window.mPrimary=sorted[0][0];
+  window.mSecondary=sorted[1][0];
+}
+
+function calcRResult(){
+  let rsc={R1:0,R2:0,R3:0,R4:0,R5:0,R6:0,R7:0};
+  CHAPTERS[3].situations.forEach((sit,qi)=>{
+    if(state_ch4_answers[qi]===undefined) return;
+    const ans=sit.a[state_ch4_answers[qi]];
+    if(ans&&ans.r) Object.entries(ans.r).forEach(([k,v])=>{if(rsc[k]!==undefined)rsc[k]+=v;});
+  });
+  let sorted=Object.entries(rsc).sort((a,b)=>b[1]-a[1]);
+  window.rPrimary=sorted[0][0];
+  window.rSecondary=sorted[1][0];
+}
+
 function calcFResult(){
   let sorted=Object.entries(fsc).sort((a,b)=>b[1]-a[1]);
   fPrimary=sorted[0][0];
