@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Твоя карта любовного сценария</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -210,59 +211,75 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
       <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;margin-bottom:12px;line-height:1.2;" id="r-title"></div>
       <div style="font-size:15px;line-height:1.65;color:var(--text-2);font-style:italic;margin-bottom:28px;" id="r-resume"></div>
     </div>
+
+    <!-- 1. КАК УСТРОЕН ТВОЙ ЛЮБОВНЫЙ СЦЕНАРИЙ -->
     <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">✨ КАК УСТРОЕН ТВОЙ ЛЮБОВНЫЙ СЦЕНАРИЙ</div>
       <div style="font-size:14px;line-height:1.65;color:var(--text);white-space:pre-line;" id="r-scenario"></div>
     </div>
-    <div style="background:var(--card);border-left:3px solid #D99847;border-radius:8px;padding:16px 18px;margin-bottom:14px;">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D99847;margin-bottom:8px;">💔 ГЛАВНЫЙ ВНУТРЕННИЙ ПАРАДОКС</div>
-      <div style="font-size:14px;line-height:1.6;color:var(--text);font-style:italic;" id="r-paradox"></div>
-    </div>
+
+    <!-- 2. ЧТО ВИДИТ МУЖЧИНА -->
     <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">👁 ЧТО ВИДИТ МУЖЧИНА — ЧТО ПРОИСХОДИТ ВНУТРИ</div>
       <div style="font-size:14px;line-height:1.65;color:var(--text);white-space:pre-line;" id="r-sees"></div>
     </div>
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">🔁 ГДЕ СЦЕНАРИЙ НАЧИНАЕТ ПОВТОРЯТЬСЯ</div>
-      <div style="font-size:14px;line-height:1.65;color:var(--text);" id="r-repeat"></div>
-    </div>
-    <div style="height:1px;background:var(--line);margin:20px 0;"></div>
+
+    <!-- 3. ГЛАВНЫЙ ВНУТРЕННИЙ ПАРАДОКС -->
     <div style="background:var(--card);border-left:3px solid #D99847;border-radius:8px;padding:16px 18px;margin-bottom:14px;">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D99847;margin-bottom:8px;">🏆 ТВОИ СИЛЬНЫЕ СТОРОНЫ</div>
-      <div style="font-size:14px;line-height:1.6;color:var(--text);" id="r-str"></div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D99847;margin-bottom:8px;">💔 ГЛАВНЫЙ ВНУТРЕННИЙ ПАРАДОКС</div>
+      <div style="font-size:14px;line-height:1.6;color:var(--text);font-style:italic;" id="r-paradox"></div>
     </div>
-    <div style="background:var(--card);border-left:3px solid #5A9E7A;border-radius:8px;padding:16px 18px;margin-bottom:8px;">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5A9E7A;margin-bottom:8px;">🌱 ЗОНЫ РОСТА</div>
-      <div style="font-size:14px;line-height:1.6;color:var(--text);" id="r-grow"></div>
-    </div>
-    <div style="font-size:13px;color:var(--text-2);font-style:italic;padding:10px 4px;line-height:1.6;margin-bottom:14px;" id="r-bridge"></div>
+
+    <!-- 4. BRIDGE-ФРАЗА -->
+    <div style="font-size:14px;color:var(--text-2);font-style:italic;padding:12px 4px;line-height:1.65;margin-bottom:14px;text-align:center;" id="r-bridge"></div>
+
     <div style="height:1px;background:var(--line);margin:20px 0;"></div>
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;">
+
+    <!-- HIDDEN BLOCKS: сильные стороны, зоны роста, повтор — остаются в DOM для email -->
+    <div style="display:none;" id="r-str"></div>
+    <div style="display:none;" id="r-grow"></div>
+    <div style="display:none;" id="r-repeat"></div>
+
+    <!-- 5. ЗАКОНОМЕРНОСТЬ -->
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:24px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">🔎 ЗАКОНОМЕРНОСТЬ, КОТОРАЯ ПРОХОДИТ ЧЕРЕЗ КАРТУ</div>
       <div style="font-size:14px;line-height:1.65;color:var(--text);white-space:pre-line;" id="r-pattern"></div>
     </div>
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;">❤️ ЧТО МОЖЕТ ПОМОЧЬ ИМЕННО ТЕБЕ</div>
-      <div style="font-size:14px;line-height:1.65;color:var(--text);margin-bottom:16px;font-weight:700;" id="r-point"></div>
 
-      <div style="border:1.5px solid var(--pink);border-radius:12px;padding:16px;margin-bottom:12px;">
+    <!-- 6. КНОПКА "ЧТО МОЖЕТ ПОМОЧЬ ИМЕННО ТЕБЕ" -->
+    <button class="btn-primary" id="btn-help" onclick="revealHelp()">❤️ Что может помочь именно тебе →</button>
+
+    <!-- БЛОК ГАЙДОВ (скрыт до нажатия) -->
+    <div id="block-guides" style="display:none;margin-top:28px;animation:fadeIn 0.5s ease;">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;line-height:1.25;margin-bottom:8px;">Инструменты, которые подойдут именно тебе</div>
+        <div style="font-size:14px;color:var(--text-2);line-height:1.55;" id="r-point"></div>
+      </div>
+
+      <!-- PROD 1 -->
+      <div style="border:1.5px solid var(--pink);border-radius:14px;padding:18px;margin-bottom:12px;background:rgba(217,123,168,0.06);">
         <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;">🥇 ГЛАВНЫЙ МАТЕРИАЛ</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:8px;color:var(--text);" id="r-prod1-name"></div>
-        <div style="font-size:13px;line-height:1.55;color:var(--text-2);" id="r-prod1-why"></div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px;color:var(--text);" id="r-prod1-name"></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--text-2);margin-bottom:10px;" id="r-prod1-desc"></div>
+        <div style="font-size:12px;line-height:1.5;color:var(--pink);font-style:italic;" id="r-prod1-why"></div>
       </div>
 
-      <div style="border:1px solid var(--line);border-radius:12px;padding:16px;">
+      <!-- PROD 2 -->
+      <div style="border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:20px;background:var(--card);">
         <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">🥈 ДОПОЛНИТЕЛЬНЫЙ ШАГ</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:8px;color:var(--text);" id="r-prod2-name"></div>
-        <div style="font-size:13px;line-height:1.55;color:var(--text-2);" id="r-prod2-why"></div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px;color:var(--text);" id="r-prod2-name"></div>
+        <div style="font-size:13px;line-height:1.55;color:var(--text-2);margin-bottom:10px;" id="r-prod2-desc"></div>
+        <div style="font-size:12px;line-height:1.5;color:var(--amber);font-style:italic;" id="r-prod2-why"></div>
+      </div>
+
+      <!-- CTA на ликвидацию -->
+      <div style="background:rgba(217,152,71,0.08);border:1px solid rgba(217,152,71,0.3);border-radius:14px;padding:16px 18px;margin-bottom:24px;">
+        <div style="font-size:13px;line-height:1.6;color:var(--text-2);margin-bottom:14px;">⏳ Эти материалы доступны на ликвидации последние дни. Если хочешь начать — сейчас лучший момент.</div>
+        <a href="https://egorovaekaterina003-cyber.github.io/index_final/" onclick="trackStep('liquidation_click')" style="display:block;padding:16px;background:linear-gradient(135deg,#D97BA8,#B85C8A);color:#fff;border-radius:12px;text-decoration:none;text-align:center;font-weight:800;font-size:16px;">Забрать на ликвидации →</a>
       </div>
     </div>
 
-    <div style="background:rgba(217,152,71,0.08);border:1px solid rgba(217,152,71,0.3);border-radius:12px;padding:14px 16px;margin-bottom:24px;">
-      <div style="font-size:13px;line-height:1.55;color:var(--text-2);margin-bottom:12px;">⏳ Эти материалы доступны на ликвидации последние дни. Если хочешь начать — сейчас лучший момент.</div>
-      <a href="https://egorovaekaterina003-cyber.github.io/index_final/" style="display:block;padding:15px;background:linear-gradient(135deg,#D97BA8,#B85C8A);color:#fff;border-radius:12px;text-decoration:none;text-align:center;font-weight:800;font-size:15px;">Забрать на ликвидации →</a>
-    </div>
-    <p style="text-align:center;font-size:11.5px;color:var(--text-3);margin-top:20px;">Карта отправлена на твою почту.</p>
+    <p id="email-sent-note" style="display:none;text-align:center;font-size:11.5px;color:var(--text-3);margin-top:8px;">✉️ Карта отправлена на твою почту.</p>
   </div>
 
 </div>
@@ -564,15 +581,20 @@ function submitEmail(){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){err.style.display='block';return;}
   err.style.display='none';
   userEmail = v;
+  session.email = v;
+  trackStep('email_submitted');
   startChapter(1);
 }
 
 /* ============ ГЛАВА / ВОПРОС ============ */
 function startChapter(n){
   curChapter = n; curQ = 0; selAns = null;
+  session.lastChapter = n;
+  session.lastQuestion = 0;
   updateTopbar();
   renderQ();
   goTo('screen-diagnostic');
+  trackStep('chapter_' + n + '_start');
 }
 
 function renderQ(){
@@ -610,6 +632,28 @@ function selectA(idx){
   if(curChapter===2) state_ch2_answers[curQ]=idx;
   if(curChapter===3) state_ch3_answers[curQ]=idx;
   if(curChapter===4) state_ch4_answers[curQ]=idx;
+
+  // Сохраняем ответ в сессию
+  const answerRecord = {
+    chapter: curChapter,
+    q_index: curQ + 1,
+    q_title: sit.title,
+    answer:  ans.t
+  };
+  // Обновляем или добавляем
+  const key = curChapter + '_' + curQ;
+  session.answers = session.answers.filter(a => !(a.chapter === curChapter && a.q_index === curQ + 1));
+  session.answers.push(answerRecord);
+  session.lastChapter = curChapter;
+  session.lastQuestion = curQ + 1;
+
+  // Трекинг каждого ответа
+  trackStep('answer', {
+    chapter:   curChapter,
+    q_index:   curQ + 1,
+    q_title:   sit.title,
+    answer:    ans.t
+  });
 }
 
 function nextQ(){
@@ -923,11 +967,122 @@ function showResult(){
   document.getElementById('r-pattern').textContent=A.pattern;
   const PP=ARCHETYPE_PRODUCTS[arch]||ARCHETYPE_PRODUCTS.A2;
   document.getElementById('r-point').textContent=PP.point;
-  document.getElementById('r-prod1-name').textContent=GUIDES[PP.prod1].name;
-  document.getElementById('r-prod1-why').textContent=PP.why1;
-  document.getElementById('r-prod2-name').textContent=GUIDES[PP.prod2].name;
-  document.getElementById('r-prod2-why').textContent=PP.why2;
+  // Prod 1
+  const g1=GUIDES[PP.prod1]||{};
+  document.getElementById('r-prod1-name').textContent=g1.name||'';
+  document.getElementById('r-prod1-desc').textContent=GUIDE_DESCRIPTIONS[PP.prod1]||'';
+  document.getElementById('r-prod1-why').textContent=PP.why1||'';
+  // Prod 2
+  const g2=GUIDES[PP.prod2]||{};
+  document.getElementById('r-prod2-name').textContent=g2.name||'';
+  document.getElementById('r-prod2-desc').textContent=GUIDE_DESCRIPTIONS[PP.prod2]||'';
+  document.getElementById('r-prod2-why').textContent=PP.why2||'';
   goTo('screen-result');
+  trackStep('result_shown');
+}
+
+/* ============ НАСТРОЙКИ ============ */
+const EMAILJS_PUBLIC_KEY  = 'ТВОЙ_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'ТВОЙ_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'ТВОЙ_TEMPLATE_ID';
+const SHEETS_WEBHOOK_URL  = 'ТВОЙ_APPS_SCRIPT_URL';
+
+/* ============ ТРЕКИНГ ============ */
+// Здесь хранится вся сессия пользователя
+let session = {
+  email: '',
+  archetype: '',
+  lastStep: '',
+  lastChapter: 0,
+  lastQuestion: 0,
+  answers: [] // [{chapter, qIndex, qTitle, answer}]
+};
+
+function trackStep(step, extra) {
+  session.lastStep = step;
+
+  const payload = {
+    timestamp:    new Date().toISOString(),
+    email:        session.email,
+    archetype:    session.archetype || '',
+    last_step:    step,
+    last_chapter: session.lastChapter,
+    last_question: session.lastQuestion,
+    answers_json: JSON.stringify(session.answers),
+    ...extra
+  };
+
+  if (!SHEETS_WEBHOOK_URL || SHEETS_WEBHOOK_URL.startsWith('ТВОЙ')) return;
+  fetch(SHEETS_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(()=>{});
+}
+
+/* ============ ОПИСАНИЯ ГАЙДОВ ============ */
+const GUIDE_DESCRIPTIONS = {
+  anxious:   'Разбор тревожного паттерна и клиническое упражнение — прожить момент «залипла», а не убегать от него.',
+  mudaki:    'Как выключить тревожный паттерн по кнопке и перестать притягивать не тех.',
+  attract:   'Работа с глубинными убеждениями, которые незаметно отфильтровывают клёвых мужчин.',
+  fear:      'Разбор страха близости для тех, кому стало страшно, что теперь это по-настоящему. Мощное упражнение внутри.',
+  living:    'Как устроена пара как психологическая система. Почему кризисы — не конец, и как ими управлять.',
+  revenge:   'Экологичные способы снять аффект, вернуть ощущение контроля и отпустить человека, который причинил боль.',
+  workbook:  'Рабочая тетрадь: перепрошивка мозга так, что здоровые отношения с офигенным мужчиной становятся неизбежными.',
+  practicum: 'Практикум по самоценности: работа с внутренним критиком и устойчивость изнутри.',
+  healthy:   'Читай мужчин как рентген: что реально происходит в его голове — почему пропал, не перезвонил, избегающий или просто занятой.'
+};
+
+/* ============ REVEAL HELP ============ */
+function revealHelp() {
+  session.archetype = getArchetype ? getArchetype() : '';
+  trackStep('help_button_clicked');
+
+  sendPortraitEmail();
+
+  const btn = document.getElementById('btn-help');
+  if (btn) btn.style.display = 'none';
+  const block = document.getElementById('block-guides');
+  if (block) {
+    block.style.display = 'block';
+    setTimeout(()=>window.scrollTo({top: block.offsetTop - 20, behavior:'smooth'}), 100);
+  }
+  trackStep('guides_shown');
+}
+
+function sendPortraitEmail() {
+  if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.startsWith('ТВОЙ')) return;
+  if (!session.email) return;
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  const arch = session.archetype || getArchetype();
+  const A = ARCHETYPES[arch] || ARCHETYPES.A2;
+  const PP = ARCHETYPE_PRODUCTS[arch] || ARCHETYPE_PRODUCTS.A2;
+  const g1 = GUIDES[PP.prod1] || {};
+  const g2 = GUIDES[PP.prod2] || {};
+
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    to_email:        session.email,
+    archetype_title: A.title,
+    scenario:        A.scenario,
+    sees:            A.sees,
+    paradox:         A.paradox,
+    bridge:          A.bridge,
+    pattern:         A.pattern,
+    strength:        A.strength,
+    growth:          A.growth,
+    point:           PP.point,
+    prod1_name:      g1.name || '',
+    prod1_why:       PP.why1 || '',
+    prod2_name:      g2.name || '',
+    prod2_why:       PP.why2 || '',
+    liquidation_url: 'https://egorovaekaterina003-cyber.github.io/index_final/'
+  }).then(() => {
+    const note = document.getElementById('email-sent-note');
+    if (note) note.style.display = 'block';
+    trackStep('email_sent');
+  }).catch(err => console.error('EmailJS:', err));
 }
 
 window.addEventListener('DOMContentLoaded',()=>updateTopbar());
