@@ -138,59 +138,8 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
   </div>
 
   <!-- CHAPTER END -->
-  <div class="screen" id="screen-chapter-end">
-    <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);margin-bottom:20px;text-align:center;" id="ce-eyebrow">❤️ Первая часть карты открыта</div>
-
-    <div class="map-prog">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
-        <span style="font-size:14px;font-weight:800;color:var(--pink);" id="ce-pct">25%</span>
-      </div>
-      <div class="map-prog-bar"><div class="map-prog-fill" id="ce-fill" style="width:25%"></div></div>
-      <div class="map-dots">
-        <span class="map-dot active" id="cd1">●</span>
-        <span class="map-dot" id="cd2">●</span>
-        <span class="map-dot" id="cd3">●</span>
-        <span class="map-dot" id="cd4">●</span>
-      </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin-bottom:20px;">
-      <div style="font-size:13px;color:var(--text-3);margin-bottom:10px;" id="ce-intro">Мы пока не знаем всю историю. Но уже появилась важная закономерность.</div>
-      <div style="font-size:13px;color:var(--text-2);margin-bottom:10px;" id="ce-label">Мужчины считывают тебя как женщину, которая...</div>
-      <div style="font-size:15px;line-height:1.65;color:var(--text);font-style:italic;" id="ce-dynamic"></div>
-    </div>
-
-    <div style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:20px;" id="ce-footer">Пока это только первая часть истории.</div>
-    <button class="btn-primary" id="ce-btn" onclick="startNextChapter()">Продолжить историю →</button>
-  </div>
-
-  <!-- PRE-RESULT -->
-  <div class="screen" id="screen-preresult">
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:48px;margin-bottom:16px;">🧩</div>
-      <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:24px;margin-bottom:14px;">Мы собрали тебя по кусочкам</div>
-    </div>
-    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:14px;">За последние несколько минут ты не проходила тест.</p>
-    <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:24px;">Ты проживала реальные ситуации.</p>
-    <div style="background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;margin-bottom:28px;font-size:14px;line-height:1.6;color:var(--text-2);">⚠️ Не спеши пролистывать.<br>Некоторые выводы могут удивить тебя.</div>
-    <div class="map-prog">
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-        <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
-        <span style="font-size:14px;font-weight:800;color:var(--pink);">100%</span>
-      </div>
-      <div class="map-prog-bar"><div class="map-prog-fill" style="width:100%"></div></div>
-      <div class="map-dots">
-        <span class="map-dot active">●</span><span class="map-dot active">●</span>
-        <span class="map-dot active">●</span><span class="map-dot active">●</span>
-      </div>
-    </div>
-    <button class="btn-primary" onclick="showResult()">Открыть мою историю →</button>
-  </div>
-
-  <!-- CHAPTER END -->
-  <div class="screen active" id="sce" style="display:none;">
-    <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);margin-bottom:20px;text-align:center;" id="ce-ey">❤️ Перша частина картки відкрита</div>
+  <div class="screen" id="sce">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);margin-bottom:20px;text-align:center;" id="ce-ey">❤️ Первая часть карты открыта</div>
     <div style="margin-bottom:22px;">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
         <span style="font-size:12px;color:var(--text-3);">Карта собрана</span>
@@ -522,6 +471,9 @@ let sc = {};
 SCALES.forEach(k => sc[k] = 50);
 
 let curChapter = 0, curQ = 0, selAns = null, userEmail = '';
+let state_ch2_answers=[], state_ch3_answers=[], state_ch4_answers=[];
+let fsc={F1:0,F2:0,F3:0,F4:0,F5:0,F6:0,F7:0,F8:0};
+let fPrimary='F2', lPrimary='L2', mPrimary='M1', rPrimary='R2';
 
 /* ============ МИНИ-ПОРТРЕТЫ ============ */
 const MINI = {
@@ -625,7 +577,7 @@ function renderQ(){
   document.getElementById('d-question').textContent = sit.q;
   const el = document.getElementById('d-answers');
   el.innerHTML='';
-  sit.answers.forEach((a,i)=>{
+  sit.a.forEach((a,i)=>{
     const btn=document.createElement('button');
     btn.className='ans-btn';
     btn.innerHTML='<div class="dot"></div><span>'+a.t+'</span>';
@@ -641,8 +593,11 @@ function selectA(idx){
   document.querySelectorAll('.ans-btn').forEach((b,i)=>b.classList.toggle('selected',i===idx));
   document.getElementById('d-next-btn').style.display='block';
   const sit=CHAPTERS[curChapter-1].situations[curQ];
-  const s=sit.answers[idx].s;
-  Object.entries(s).forEach(([k,v])=>{if(sc[k]!==undefined)sc[k]=Math.max(0,Math.min(100,sc[k]+v*5));});
+  const ans=sit.a[idx];
+  if(curChapter===1&&ans.f) Object.entries(ans.f).forEach(([k,v])=>{if(fsc[k]!==undefined)fsc[k]+=v;});
+  if(curChapter===2) state_ch2_answers[curQ]=idx;
+  if(curChapter===3) state_ch3_answers[curQ]=idx;
+  if(curChapter===4) state_ch4_answers[curQ]=idx;
 }
 
 function nextQ(){
@@ -653,22 +608,43 @@ function nextQ(){
 }
 
 function showChapterEnd(){
-  if(curChapter>=4){goTo('screen-preresult');return;}
-  const cfg=CE_CFG[curChapter];
-  const scen=getScenario();
-  const dyn=MINI[curChapter][scen]||'';
-  document.getElementById('ce-eyebrow').textContent=cfg.eyebrow;
-  document.getElementById('ce-intro').textContent=cfg.intro;
-  document.getElementById('ce-label').textContent=cfg.label;
-  document.getElementById('ce-dynamic').textContent=dyn;
-  document.getElementById('ce-footer').textContent=cfg.footer;
-  document.getElementById('ce-pct').textContent=cfg.pct;
-  document.getElementById('ce-fill').style.width=cfg.w;
+  if(curChapter===1) calcFResult();
+  if(curChapter===2) calcLResult();
+  if(curChapter===3) calcMResult();
+
+  if(curChapter>=4){
+    calcRResult();
+    const rt=R_TEXTS[rPrimary]||R_TEXTS.R1;
+    document.getElementById('r4-portrait').textContent=rt.portrait;
+    document.getElementById('r4-pattern').textContent=rt.pattern;
+    goTo('scr-r');
+    return;
+  }
+
+  const pcts=['25%','50%','75%'];
+  const widths=['25%','50%','75%'];
+  const labels=['❤️ ПЕРВАЯ ЧАСТЬ КАРТЫ ОТКРЫТА','❤️ ВТОРАЯ ЧАСТЬ КАРТЫ ОТКРЫТА','❤️ ТРЕТЬЯ ЧАСТЬ КАРТЫ ОТКРЫТА'];
+  const pLabels=['❤️ Первая часть твоего портрета','❤️ Вторая часть твоего портрета','❤️ Третья часть твоего портрета'];
+  const pLabels2=['🧩 Карта замечает первую закономерность','🧩 Карта замечает вторую закономерность','🧩 Карта замечает третью закономерность'];
+  const dots=[[1,0,0,0],[1,1,0,0],[1,1,1,0]];
+
+  const idx=curChapter-1;
+  const texts={0:F_TEXTS,1:L_TEXTS,2:M_TEXTS};
+  const primaries={0:fPrimary,1:lPrimary,2:mPrimary};
+  const t=texts[idx][primaries[idx]]||Object.values(texts[idx])[0];
+
+  document.getElementById('ce-ey').textContent=labels[idx];
+  document.getElementById('ce-pct').textContent=pcts[idx];
+  document.getElementById('ce-fill').style.width=widths[idx];
+  document.getElementById('ce-plabel').textContent=pLabels[idx];
+  document.getElementById('ce-plbl2').textContent=pLabels2[idx];
+  document.getElementById('ce-portrait').textContent=t.portrait;
+  document.getElementById('ce-pattern').textContent=t.pattern;
   ['cd1','cd2','cd3','cd4'].forEach((id,i)=>{
-    document.getElementById(id).className='map-dot'+(cfg.dots[i]?' active':'');
+    document.getElementById(id).style.color=dots[idx][i]?'var(--pink)':'var(--text-3)';
   });
   document.getElementById('ce-btn').onclick=startNextChapter;
-  goTo('screen-chapter-end');
+  goTo('sce');
 }
 
 function startNextChapter(){startChapter(curChapter+1);}
@@ -793,7 +769,7 @@ function showResult(){
   document.getElementById('r-bridge').textContent=A.bridge;
   document.getElementById('r-pattern').textContent=A.pattern;
   document.getElementById('r-help').textContent=A.help;
-  goToScreen('screen-result');
+  goTo('screen-result');
 }
 
 window.addEventListener('DOMContentLoaded',()=>updateTopbar());
