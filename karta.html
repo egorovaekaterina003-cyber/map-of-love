@@ -766,6 +766,7 @@ function getTopMin(){
    СОСТОЯНИЕ
 ══════════════════════════════════════════════════ */
 let curCh=0, curQ=0, selA=null, userEmail='';
+let state_ch2_answers=[], state_ch3_answers=[], state_ch4_answers=[];
 let picks={F:null,L:null,M:null,R:null};
 
 /* ══════════════════════════════════════════════════
@@ -831,6 +832,9 @@ function selAns(idx){
   selA=idx;
   document.querySelectorAll('.ab').forEach((b,i)=>b.classList.toggle('sel',i===idx));
   document.getElementById('d-next').style.display='block';
+  if(curCh===2) state_ch2_answers[curQ]=idx;
+  if(curCh===3) state_ch3_answers[curQ]=idx;
+  if(curCh===4) state_ch4_answers[curQ]=idx;
   const sit=CHAPTERS[curCh-1].situations[curQ];
   const ans=sit.a[idx];
   if(ans.f){
