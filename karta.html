@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Твоя карта любовного сценария</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -982,10 +981,10 @@ function showResult(){
 }
 
 /* ============ НАСТРОЙКИ ============ */
-const EMAILJS_PUBLIC_KEY  = 'ТВОЙ_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID  = 'ТВОЙ_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'ТВОЙ_TEMPLATE_ID';
-const SHEETS_WEBHOOK_URL  = 'ТВОЙ_APPS_SCRIPT_URL';
+const EMAILJS_PUBLIC_KEY  = '';
+const EMAILJS_SERVICE_ID  = '';
+const EMAILJS_TEMPLATE_ID = '';
+const SHEETS_WEBHOOK_URL  = 'https://script.google.com/macros/s/AKfycbw4s0Nv_gjUK9oZp29u4sKf0gZmircQG07FGNQ945v9ht0HqV40bluvywy7oBBSk925/exec';
 
 /* ============ ТРЕКИНГ ============ */
 // Здесь хранится вся сессия пользователя
@@ -1052,18 +1051,19 @@ function revealHelp() {
 }
 
 function sendPortraitEmail() {
-  if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.startsWith('ТВОЙ')) return;
   if (!session.email) return;
-  emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  const arch = session.archetype || getArchetype();
+  const arch = session.archetype || (getArchetype ? getArchetype() : '');
   const A = ARCHETYPES[arch] || ARCHETYPES.A2;
   const PP = ARCHETYPE_PRODUCTS[arch] || ARCHETYPE_PRODUCTS.A2;
   const g1 = GUIDES[PP.prod1] || {};
   const g2 = GUIDES[PP.prod2] || {};
 
-  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-    to_email:        session.email,
+  // Отправляем данные портрета в Apps Script — он сам отправит письмо через Gmail
+  const payload = {
+    step:            'help_button_clicked',
+    email:           session.email,
+    archetype:       arch,
     archetype_title: A.title,
     scenario:        A.scenario,
     sees:            A.sees,
@@ -1077,12 +1077,22 @@ function sendPortraitEmail() {
     prod1_why:       PP.why1 || '',
     prod2_name:      g2.name || '',
     prod2_why:       PP.why2 || '',
-    liquidation_url: 'https://egorovaekaterina003-cyber.github.io/index_final/'
+    liquidation_url: 'https://egorovaekaterina003-cyber.github.io/index_final/',
+    last_chapter:    session.lastChapter,
+    last_question:   session.lastQuestion,
+    answers_json:    JSON.stringify(session.answers)
+  };
+
+  if (!SHEETS_WEBHOOK_URL || SHEETS_WEBHOOK_URL.startsWith('ТВОЙ')) return;
+  fetch(SHEETS_WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
   }).then(() => {
     const note = document.getElementById('email-sent-note');
     if (note) note.style.display = 'block';
-    trackStep('email_sent');
-  }).catch(err => console.error('EmailJS:', err));
+  }).catch(err => console.error('Sheets error:', err));
 }
 
 window.addEventListener('DOMContentLoaded',()=>updateTopbar());
