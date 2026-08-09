@@ -1004,13 +1004,13 @@ function trackStep(step, extra) {
   session.lastStep = step;
 
   const payload = {
-    timestamp:    new Date().toISOString(),
-    email:        session.email,
-    archetype:    session.archetype || '',
-    last_step:    step,
-    last_chapter: session.lastChapter,
-    last_question: session.lastQuestion,
-    answers_json: JSON.stringify(session.answers),
+    timestamp:     new Date().toISOString(),
+    email:         session.email || userEmail || '',
+    archetype:     session.archetype || '',
+    last_step:     step,
+    last_chapter:  session.lastChapter || '',
+    last_question: session.lastQuestion || '',
+    answers_json:  JSON.stringify(session.answers || []),
     ...extra
   };
 
