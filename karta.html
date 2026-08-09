@@ -1052,7 +1052,6 @@ const GUIDE_DESCRIPTIONS = {
 /* ============ REVEAL HELP ============ */
 function revealHelp() {
   session.archetype = getArchetype ? getArchetype() : '';
-  trackStep('help_button_clicked');
 
   sendPortraitEmail();
 
@@ -1078,6 +1077,7 @@ function sendPortraitEmail() {
   // Отправляем данные портрета в Apps Script — он сам отправит письмо через Gmail
   const payload = {
     step:            'help_button_clicked',
+    last_step:       'help_button_clicked',
     email:           session.email,
     archetype:       arch,
     archetype_title: A.title,
