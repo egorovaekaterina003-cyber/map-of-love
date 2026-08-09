@@ -1005,12 +1005,11 @@ function trackStep(step, extra) {
 
   // Отправляем в конце каждой главы + ключевые действия
   const SEND_STEPS = [
-    'email_submitted',
-    'chapter_1_start',   // сразу после email — фиксируем что начала
-    'chapter_2_start',   // закончила главу 1
-    'chapter_3_start',   // закончила главу 2
-    'chapter_4_start',   // закончила главу 3
-    'chapter_4_complete',// закончила все вопросы
+    'chapter_1_start',
+    'chapter_2_start',
+    'chapter_3_start',
+    'chapter_4_start',
+    'chapter_4_complete',
     'result_shown',
     'help_button_clicked',
     'liquidation_click'
