@@ -188,7 +188,7 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
       <div style="font-size:13px;line-height:1.6;color:var(--text-2);white-space:pre-line;" id="r4-pattern"></div>
     </div>
     <div style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:20px;line-height:1.5;" id="r4-hook"></div>
-    <button class="btn-primary" onclick="goTo('screen-preresult')">Открыть полную карту →</button>
+    <button class="btn-primary" onclick="trackStep('preresult_seen');goTo('screen-preresult')">Открыть полную карту →</button>
   </div>
 
   <!-- PRE-RESULT -->
@@ -200,7 +200,7 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
     <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:14px;">Ты ответила на все вопросы — и теперь отдельные детали сложились в общую картину.</p>
     <p style="font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:24px;">Здесь важен не один ответ, а то, как они связались между собой.</p>
     <div style="background:var(--card);border-left:3px solid var(--pink);border-radius:8px;padding:16px 18px;margin-bottom:24px;font-size:14px;line-height:1.6;color:var(--text-2);">⚠️ Возможно, в некоторых выводах ты узнаешь себя сразу. А некоторые заметишь за собой впервые.</div>
-    <button class="btn-primary" onclick="showResult()">Открыть мою карту любовного сценария →</button>
+    <button class="btn-primary" onclick="trackStep('preresult_open');showResult()">Открыть мою карту любовного сценария →</button>
   </div>
 
   <!-- RESULT -->
@@ -670,11 +670,13 @@ function showChapterEnd(){
 
   if(curChapter>=4){
     calcRResult();
+    session.archetype = getArchetype ? getArchetype() : '';
     const rt=R_TEXTS[rPrimary]||R_TEXTS.R1;
     document.getElementById('r4-portrait').textContent=rt.portrait;
     document.getElementById('r4-pattern').textContent=rt.pattern;
     document.getElementById('r4-hook').textContent=rt.hook||'';
     goTo('scr-r');
+    trackStep('chapter_4_complete');
     return;
   }
 
