@@ -112,7 +112,7 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
   <div class="screen" id="screen-email">
     <div style="font-size:38px;text-align:center;margin-bottom:16px;">✨</div>
     <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:22px;text-align:center;margin-bottom:10px;">Прежде чем начать</div>
-    <div style="font-size:14px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.5;">Оставь email — в конце мы пришлём тебе твою личную карту.</div>
+    <div style="font-size:14px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.5;">Оставь email — в конце, если захочешь, мы отправим твою карту любви на почту.</div>
     <input class="input-field" id="email-input" type="email" placeholder="твой@email.com">
     <div class="input-error" id="email-error">Введи корректный email</div>
     <button class="btn-primary" onclick="submitEmail()">Сохранить и начать →</button>
@@ -245,6 +245,14 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
       <div style="font-size:14px;line-height:1.65;color:var(--text);white-space:pre-line;" id="r-pattern"></div>
     </div>
 
+    <!-- ОТПРАВКА КАРТЫ НА ПОЧТУ (по желанию) -->
+    <div id="block-send-map" style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-bottom:8px;text-align:center;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;margin-bottom:8px;color:var(--text);">📩 Хочешь сохранить свою карту любви?</div>
+      <div style="font-size:13px;line-height:1.6;color:var(--text-2);">Отправим её на <strong style="color:var(--text);" id="send-map-email"></strong>, чтобы ты могла вернуться к ней позже.</div>
+      <button class="btn-amber" id="btn-send-map" onclick="requestMapEmail()" style="margin-top:16px;">Отправить карту на почту</button>
+      <p id="email-sent-note" style="display:none;font-size:13px;color:var(--text-2);margin-top:14px;">✉️ Готово! Карта отправлена на твою почту.</p>
+    </div>
+
     <!-- 6. КНОПКА "ЧТО МОЖЕТ ПОМОЧЬ ИМЕННО ТЕБЕ" -->
     <button class="btn-primary" id="btn-help" onclick="revealHelp()">❤️ Что может помочь именно тебе →</button>
 
@@ -271,15 +279,8 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
         <div style="font-size:12px;line-height:1.5;color:var(--amber);font-style:italic;" id="r-prod2-why"></div>
       </div>
 
-      <!-- CTA на ликвидацию -->
-      <div style="background:rgba(217,152,71,0.08);border:1px solid rgba(217,152,71,0.3);border-radius:14px;padding:16px 18px;margin-bottom:24px;">
-        <div style="font-size:15px;font-weight:800;font-family:'Montserrat',sans-serif;color:var(--text);margin-bottom:10px;line-height:1.35;">МОЖНО ЗАКРЫТЬ КАРТУ. А МОЖНО ИЗМЕНИТЬ СЦЕНАРИЙ</div>
-        <div style="font-size:13px;line-height:1.7;color:var(--text-2);margin-bottom:16px;">Теперь ты уже знаешь, <strong style="color:var(--text);">какой механизм снова и снова включается в твоих отношениях.</strong><br><br>Мы подобрали материалы именно под твою карту — чтобы ты могла начать работать не со всеми отношениями сразу, а <strong style="color:var(--text);">с той точкой, где твой сценарий ломается.</strong><br><br>Сейчас эти гайды участвуют в финальной ликвидации. <strong style="color:var(--text);">После неё купить их уже будет нельзя.</strong><br><br>Если откладывала их «на потом» — <strong style="color:var(--text);">этого «потом» уже не будет.</strong><br><br><strong style="color:var(--text);">Если хочешь начать — сейчас лучший момент.</strong></div>
-        <a href="https://egorovaekaterina003-cyber.github.io/index_final/" onclick="trackStep('liquidation_click')" style="display:block;padding:16px;background:linear-gradient(135deg,#D97BA8,#B85C8A);color:#fff;border-radius:12px;text-decoration:none;text-align:center;font-weight:800;font-size:16px;">👇 Забрать, пока они ещё доступны</a>
-      </div>
     </div>
 
-    <p id="email-sent-note" style="display:none;text-align:center;font-size:11.5px;color:var(--text-3);margin-top:8px;">✉️ Карта отправлена на твою почту.</p>
   </div>
 
 </div>
@@ -957,6 +958,7 @@ function getArchetype(){
 function showResult(){
   const arch=getArchetype();
   const A=ARCHETYPES[arch]||ARCHETYPES.A2;
+  const se=document.getElementById('send-map-email'); if(se) se.textContent=session.email||'твою почту';
   document.getElementById('r-title').textContent=A.title;
   document.getElementById('r-resume').textContent=A.resume;
   document.getElementById('r-scenario').textContent=A.scenario;
@@ -1011,8 +1013,7 @@ function trackStep(step, extra) {
     'chapter_4_start',
     'chapter_4_complete',
     'result_shown',
-    'help_button_clicked',
-    'liquidation_click'
+    'help_button_clicked'
   ];
   if (!SEND_STEPS.includes(step)) return;
 
@@ -1039,7 +1040,7 @@ function trackStep(step, extra) {
 /* ============ ОПИСАНИЯ ГАЙДОВ ============ */
 const GUIDE_DESCRIPTIONS = {
   anxious:   'Разбор тревожного паттерна и клиническое упражнение — прожить момент «залипла», а не убегать от него.',
-  mudaki:    'Как выключить тревожный паттерн по кнопке и перестать притягивать не тех.',
+  muds:      'Как выключить тревожный паттерн по кнопке и перестать притягивать не тех.',
   attract:   'Работа с глубинными убеждениями, которые незаметно отфильтровывают клёвых мужчин.',
   fear:      'Разбор страха близости для тех, кому стало страшно, что теперь это по-настоящему. Мощное упражнение внутри.',
   living:    'Как устроена пара как психологическая система. Почему кризисы — не конец, и как ими управлять.',
@@ -1053,8 +1054,6 @@ const GUIDE_DESCRIPTIONS = {
 function revealHelp() {
   session.archetype = getArchetype ? getArchetype() : '';
 
-  sendPortraitEmail();
-
   const btn = document.getElementById('btn-help');
   if (btn) btn.style.display = 'none';
   const block = document.getElementById('block-guides');
@@ -1063,6 +1062,16 @@ function revealHelp() {
     setTimeout(()=>window.scrollTo({top: block.offsetTop - 20, behavior:'smooth'}), 100);
   }
   trackStep('guides_shown');
+}
+
+let mapEmailSent = false;
+function requestMapEmail() {
+  if (mapEmailSent) return;
+  mapEmailSent = true;
+  const btn = document.getElementById('btn-send-map');
+  if (btn) { btn.disabled = true; btn.textContent = 'Отправляем…'; }
+  session.archetype = session.archetype || (getArchetype ? getArchetype() : '');
+  sendPortraitEmail();
 }
 
 function sendPortraitEmail() {
@@ -1093,7 +1102,6 @@ function sendPortraitEmail() {
     prod1_why:       PP.why1 || '',
     prod2_name:      g2.name || '',
     prod2_why:       PP.why2 || '',
-    liquidation_url: 'https://egorovaekaterina003-cyber.github.io/index_final/',
     last_chapter:    session.lastChapter,
     last_question:   session.lastQuestion,
     answers_json:    JSON.stringify(session.answers)
@@ -1108,7 +1116,14 @@ function sendPortraitEmail() {
   }).then(() => {
     const note = document.getElementById('email-sent-note');
     if (note) note.style.display = 'block';
-  }).catch(err => console.error('Sheets error:', err));
+    const sendBtn = document.getElementById('btn-send-map');
+    if (sendBtn) sendBtn.style.display = 'none';
+  }).catch(err => {
+    console.error('Sheets error:', err);
+    mapEmailSent = false;
+    const sendBtn = document.getElementById('btn-send-map');
+    if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Не получилось, попробовать ещё раз'; }
+  });
 }
 
 window.addEventListener('DOMContentLoaded',()=>updateTopbar());
