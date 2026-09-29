@@ -253,34 +253,6 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(ellipse 600px 400
       <p id="email-sent-note" style="display:none;font-size:13px;color:var(--text-2);margin-top:14px;">✉️ Готово! Карта отправлена на твою почту.</p>
     </div>
 
-    <!-- 6. КНОПКА "ЧТО МОЖЕТ ПОМОЧЬ ИМЕННО ТЕБЕ" -->
-    <button class="btn-primary" id="btn-help" onclick="revealHelp()">❤️ Что может помочь именно тебе →</button>
-
-    <!-- БЛОК ГАЙДОВ (скрыт до нажатия) -->
-    <div id="block-guides" style="display:none;margin-top:28px;animation:fadeIn 0.5s ease;">
-      <div style="text-align:center;margin-bottom:20px;">
-        <div style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;line-height:1.25;margin-bottom:8px;">Инструменты, которые подойдут именно тебе</div>
-        <div style="font-size:14px;color:var(--text-2);line-height:1.55;" id="r-point"></div>
-      </div>
-
-      <!-- PROD 1 -->
-      <div style="border:1.5px solid var(--pink);border-radius:14px;padding:18px;margin-bottom:12px;background:rgba(217,123,168,0.06);">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;">🥇 ГЛАВНЫЙ МАТЕРИАЛ</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px;color:var(--text);" id="r-prod1-name"></div>
-        <div style="font-size:13px;line-height:1.55;color:var(--text-2);margin-bottom:10px;" id="r-prod1-desc"></div>
-        <div style="font-size:12px;line-height:1.5;color:var(--pink);font-style:italic;" id="r-prod1-why"></div>
-      </div>
-
-      <!-- PROD 2 -->
-      <div style="border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:20px;background:var(--card);">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;">🥈 ДОПОЛНИТЕЛЬНЫЙ ШАГ</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px;color:var(--text);" id="r-prod2-name"></div>
-        <div style="font-size:13px;line-height:1.55;color:var(--text-2);margin-bottom:10px;" id="r-prod2-desc"></div>
-        <div style="font-size:12px;line-height:1.5;color:var(--amber);font-style:italic;" id="r-prod2-why"></div>
-      </div>
-
-    </div>
-
   </div>
 
 </div>
@@ -908,26 +880,16 @@ const R_TEXTS = {
 };
 
 
-const GUIDES = {
-  rengten:{name:'Читай мужчин как рентген'},
-  muds:{name:'Как не залипать на мудаков'},
-  attract:{name:'Как начать притягивать нормальных'},
-  practicum:{name:'Практикум «Тёмные искусства»'},
-  revenge:{name:'Гайд про месть'},
-  healthy:{name:'Строим здоровые отношения'},
-  princess:{name:'Принцессы не какают'},
-  alone:{name:'Стоп, одиночество'}
-};
 
 const ARCHETYPE_PRODUCTS = {
-  A1:{point:'Разрешать себе нуждаться и не воспринимать уязвимость как потерю себя',prod1:'healthy',why1:'Помогает выстраивать близость, где можно быть неидеальной и зависимой в здоровой степени — без потери себя.',prod2:'practicum',why2:'Помогает найти баланс между внутренней опорой и готовностью впускать другого человека.'},
-  A2:{point:'Возвращать себе собственную оценку происходящего',prod1:'practicum',why1:'Помогает вернуть внутреннюю опору — перестать делать реакцию мужчины главным мерилом своей ценности.',prod2:'attract',why2:'Помогает замечать мужчин, которые выбирают тебя стабильно, а не от случая к случаю.'},
-  A3:{point:'Отделять наблюдаемый факт от тревожной интерпретации',prod1:'muds',why1:'Помогает выдерживать неопределённость и не превращать паузу в вывод об отношениях.',prod2:'practicum',why2:'Возвращает внутреннюю опору, из которой легче отделять факт от тревоги.'},
-  A4:{point:'Замечать цену компромисса раньше, чем накопится усталость',prod1:'healthy',why1:'Учит оценивать взаимность по реальному вкладу здесь и сейчас, а не по надежде на потом.',prod2:'practicum',why2:'Помогает укрепить самоценность, чтобы гибкость не превращалась в потерю себя.'},
-  A5:{point:'Показывать уязвимость до того, как включится дистанция',prod1:'healthy',why1:'Учит говорить о важном и оставаться в контакте, даже когда становится страшно.',prod2:'practicum',why2:'Помогает найти внутреннюю опору, которая позволяет рисковать близостью без потери себя.'},
-  A6:{point:'Не измерять ценность любви количеством собственных усилий',prod1:'muds',why1:'Помогает перестать вкладываться в потенциальную версию мужчины вместо реальной.',prod2:'practicum',why2:'Возвращает внутреннюю опору — самоценность, которая не зависит от того, дорастил ли ты его до нужной версии.'},
-  A7:{point:'Различать близость и нервное напряжение',prod1:'muds',why1:'Помогает распознавать разницу между настоящей химией и тревожными качелями.',prod2:'attract',why2:'Учит замечать ценность стабильности, даже когда внутри не хватает привычного напряжения.'},
-  A8:{point:'Отличать реальный сигнал «не подходит» от желания закрыть неопределённость',prod1:'healthy',why1:'Учит оставаться в контакте и говорить о важном вместо того, чтобы уходить в дистанцию.',prod2:'practicum',why2:'Помогает делать защиту точнее — опираться на факты, а не на дискомфорт от уязвимости.'}
+  A1:{point:'Разрешать себе нуждаться и не воспринимать уязвимость как потерю себя'},
+  A2:{point:'Возвращать себе собственную оценку происходящего'},
+  A3:{point:'Отделять наблюдаемый факт от тревожной интерпретации'},
+  A4:{point:'Замечать цену компромисса раньше, чем накопится усталость'},
+  A5:{point:'Показывать уязвимость до того, как включится дистанция'},
+  A6:{point:'Не измерять ценность любви количеством собственных усилий'},
+  A7:{point:'Различать близость и нервное напряжение'},
+  A8:{point:'Отличать реальный сигнал «не подходит» от желания закрыть неопределённость'}
 };
 
 const ARCHETYPES = {
@@ -969,18 +931,6 @@ function showResult(){
   document.getElementById('r-grow').textContent=A.growth;
   document.getElementById('r-bridge').textContent=A.bridge;
   document.getElementById('r-pattern').textContent=A.pattern;
-  const PP=ARCHETYPE_PRODUCTS[arch]||ARCHETYPE_PRODUCTS.A2;
-  document.getElementById('r-point').textContent=PP.point;
-  // Prod 1
-  const g1=GUIDES[PP.prod1]||{};
-  document.getElementById('r-prod1-name').textContent=g1.name||'';
-  document.getElementById('r-prod1-desc').textContent=GUIDE_DESCRIPTIONS[PP.prod1]||'';
-  document.getElementById('r-prod1-why').textContent=PP.why1||'';
-  // Prod 2
-  const g2=GUIDES[PP.prod2]||{};
-  document.getElementById('r-prod2-name').textContent=g2.name||'';
-  document.getElementById('r-prod2-desc').textContent=GUIDE_DESCRIPTIONS[PP.prod2]||'';
-  document.getElementById('r-prod2-why').textContent=PP.why2||'';
   goTo('screen-result');
   trackStep('result_shown');
 }
@@ -1037,33 +987,6 @@ function trackStep(step, extra) {
   }).catch(()=>{});
 }
 
-/* ============ ОПИСАНИЯ ГАЙДОВ ============ */
-const GUIDE_DESCRIPTIONS = {
-  anxious:   'Разбор тревожного паттерна и клиническое упражнение — прожить момент «залипла», а не убегать от него.',
-  muds:      'Как выключить тревожный паттерн по кнопке и перестать притягивать не тех.',
-  attract:   'Работа с глубинными убеждениями, которые незаметно отфильтровывают клёвых мужчин.',
-  fear:      'Разбор страха близости для тех, кому стало страшно, что теперь это по-настоящему. Мощное упражнение внутри.',
-  living:    'Как устроена пара как психологическая система. Почему кризисы — не конец, и как ими управлять.',
-  revenge:   'Экологичные способы снять аффект, вернуть ощущение контроля и отпустить человека, который причинил боль.',
-  workbook:  'Рабочая тетрадь: перепрошивка мозга так, что здоровые отношения с офигенным мужчиной становятся неизбежными.',
-  practicum: 'Практикум по самоценности: работа с внутренним критиком и устойчивость изнутри.',
-  healthy:   'Разбираем как выстраивать близость, где можно быть настоящей — зависимой в здоровой степени, без потери себя и без страха.'
-};
-
-/* ============ REVEAL HELP ============ */
-function revealHelp() {
-  session.archetype = getArchetype ? getArchetype() : '';
-
-  const btn = document.getElementById('btn-help');
-  if (btn) btn.style.display = 'none';
-  const block = document.getElementById('block-guides');
-  if (block) {
-    block.style.display = 'block';
-    setTimeout(()=>window.scrollTo({top: block.offsetTop - 20, behavior:'smooth'}), 100);
-  }
-  trackStep('guides_shown');
-}
-
 let mapEmailSent = false;
 function requestMapEmail() {
   if (mapEmailSent) return;
@@ -1080,8 +1003,6 @@ function sendPortraitEmail() {
   const arch = session.archetype || (getArchetype ? getArchetype() : '');
   const A = ARCHETYPES[arch] || ARCHETYPES.A2;
   const PP = ARCHETYPE_PRODUCTS[arch] || ARCHETYPE_PRODUCTS.A2;
-  const g1 = GUIDES[PP.prod1] || {};
-  const g2 = GUIDES[PP.prod2] || {};
 
   // Отправляем данные портрета в Apps Script — он сам отправит письмо через Gmail
   const payload = {
@@ -1098,10 +1019,6 @@ function sendPortraitEmail() {
     strength:        A.strength,
     growth:          A.growth,
     point:           PP.point,
-    prod1_name:      g1.name || '',
-    prod1_why:       PP.why1 || '',
-    prod2_name:      g2.name || '',
-    prod2_why:       PP.why2 || '',
     last_chapter:    session.lastChapter,
     last_question:   session.lastQuestion,
     answers_json:    JSON.stringify(session.answers)
